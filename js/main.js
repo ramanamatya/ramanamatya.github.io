@@ -102,6 +102,30 @@ $(function () {
 			$('header').removeClass('filled');
 		}
 	});
+
+	/* work magnific popup */
+	$('.has-popup').magnificPopup({
+		type: 'inline',
+		overflowY: 'auto',
+		closeBtnInside: true,
+		mainClass: 'mfp-fade'
+	});
+	
+	/* gallery */
+	$('.post-lightbox').magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		tLoading: 'Loading image #%curr%...',
+		mainClass: 'mfp-img-mobile',
+		gallery: {
+			enabled: true,
+			navigateByImgClick: true,
+			preload: [0,1],
+		},
+		image: {
+			tError: '<a href="%url%">The image #%curr%</a> could not be loaded.'
+		}
+	});
 	
 	/* Validate contact form */
 	$("#cform").validate({
