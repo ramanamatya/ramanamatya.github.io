@@ -11,6 +11,7 @@ $(function () {
 			$('.preloader').fadeOut();
 			$('body').addClass('ready');
 		});
+		$('#year').html(new Date().getFullYear());
 	});
 
 	/* Fade animations on scroll */
@@ -168,5 +169,4 @@ $(function () {
 			// });
 		}
 	});
-
 });
