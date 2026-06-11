@@ -1,484 +1,574 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	
-	<!-- Basic -->
-	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title>Raman Amatya - Software Engineer</title>
-	<meta name="description" content="">
-	<meta name="keywords" content="">
-	
-	<!-- Mobile Specific Metas -->
-	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-	
-	<!-- Load Fonts -->
-	<link href="https://fonts.googleapis.com/css?family=Hind:300,400,500,600,700%7CMontserrat:400,700%7CEczar:400,500,600,700,800" rel="stylesheet">
-	
-	<!-- CSS -->
-	<link rel="stylesheet" href="css/basic.css" />
-	<link rel="stylesheet" href="css/layout.css" />
-	<link rel="stylesheet" href="css/blogs.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/animate.css/3.3.0/animate.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/5.14.0/css/all.min.css" />
-	<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/magnific-popup.min.css"/>
-	
-	<!--[if lt IE 9]>
-	<script src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
-	<script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-	<![endif]-->
-	
-	<!-- Favicon -->
-	<link rel="shortcut icon" href="images/ficon.jpg">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Raman Amatya — Software Engineer</title>
+<meta name="description" content="Raman Amatya — full-stack software engineer. Kathmandu-born, Sydney-based. Node.js, React, TypeScript, AWS.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;700;800;900&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path d="M6 2 L24 9 L11 13 L26 19 L6 30 Z" fill="%23C8102E"/></svg>'>
+<style>
+  :root{
+    --bg:#F2F5F8;
+    --bg-raised:#FAFCFE;
+    --ink:#10151D;
+    --slate:#5A6B7E;
+    --line:#C9D3DD;
+    --crimson:#C8102E;
+    --max:1120px;
+    --font-display:"Archivo",sans-serif;
+    --font-body:"IBM Plex Sans",sans-serif;
+    --font-mono:"IBM Plex Mono",monospace;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:var(--font-body);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  a{color:inherit;text-decoration:none}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--crimson);outline-offset:3px;border-radius:2px}
+  img{max-width:100%;display:block}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
 
-	<!-- Global site tag (gtag.js) - Google Analytics -->
-	<script async src="https://www.googletagmanager.com/gtag/js?id=UA-173061565-1"></script>
-	<script>
-		window.dataLayer = window.dataLayer || [];
-		function gtag(){dataLayer.push(arguments);}
-		gtag('js', new Date());
+  /* ───── scroll-reveal system ───── */
+  .reveal{
+    opacity:0;
+    transform:translateY(26px);
+    transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);
+    transition-delay:var(--d,0s);
+  }
+  .reveal.in{opacity:1;transform:none}
 
-		gtag('config', 'UA-173061565-1');
-	</script>
+  /* ───── telemetry bar ───── */
+  .telemetry{
+    border-bottom:1px solid var(--line);
+    background:var(--bg-raised);
+    font-family:var(--font-mono);
+    font-size:11px;
+    letter-spacing:.04em;
+    color:var(--slate);
+  }
+  .telemetry .wrap{
+    display:flex;justify-content:space-between;gap:16px;
+    padding-top:8px;padding-bottom:8px;
+    overflow-x:auto;white-space:nowrap;
+    scrollbar-width:none;
+  }
+  .telemetry b{color:var(--ink);font-weight:500}
+  .telemetry .dot{color:var(--crimson)}
+  .telemetry .pulse{animation:blink 2.4s ease-in-out infinite}
+  @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
+
+  /* ───── header ───── */
+  header{
+    position:sticky;top:0;z-index:20;
+    background:rgba(242,245,248,.88);
+    backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex;align-items:center;justify-content:space-between;
+    padding-top:14px;padding-bottom:14px;
+  }
+  .mark{display:flex;align-items:center;gap:10px;font-family:var(--font-display);font-weight:800;font-size:18px;letter-spacing:-.01em}
+  .pennant{width:16px;height:20px;flex:none;transform-origin:left center}
+  .mark:hover .pennant{animation:flutter .9s ease-in-out}
+  @keyframes flutter{
+    0%,100%{transform:skewY(0) scaleX(1)}
+    25%{transform:skewY(-6deg) scaleX(.94)}
+    50%{transform:skewY(4deg) scaleX(1.03)}
+    75%{transform:skewY(-3deg) scaleX(.97)}
+  }
+  .nav ul{display:flex;gap:28px;list-style:none;font-family:var(--font-mono);font-size:12px;letter-spacing:.08em;text-transform:uppercase}
+  .nav ul a{color:var(--slate);position:relative;padding-bottom:3px}
+  .nav ul a::after{
+    content:"";position:absolute;left:0;bottom:0;width:100%;height:1.5px;
+    background:var(--crimson);transform:scaleX(0);transform-origin:right;
+    transition:transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .nav ul a:hover{color:var(--crimson)}
+  .nav ul a:hover::after{transform:scaleX(1);transform-origin:left}
+  @media(max-width:640px){.nav ul{gap:16px}.nav ul li:nth-child(n+4){display:none}}
+
+  /* ───── hero ───── */
+  .hero{padding:88px 0 80px;border-bottom:1px solid var(--line);position:relative;overflow:hidden}
+  .hero .eyebrow{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--crimson);margin-bottom:24px;
+    animation:rise .7s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .hero h1{
+    font-family:var(--font-display);
+    font-weight:900;
+    font-size:clamp(42px,8vw,92px);
+    line-height:.98;
+    letter-spacing:-.025em;
+    max-width:15ch;
+  }
+  .hero h1 .w{display:inline-block;animation:riseClip .85s cubic-bezier(.2,.7,.2,1) both}
+  .hero h1 em{font-style:normal;color:var(--crimson);display:inline-block;animation:pop .5s 1s cubic-bezier(.3,1.6,.4,1) both}
+  @keyframes pop{from{opacity:0;transform:scale(0) rotate(-30deg)}to{opacity:1;transform:none}}
+  @keyframes riseClip{from{opacity:0;transform:translateY(.6em) rotate(2deg)}to{opacity:1;transform:none}}
+  .hero p.lede{
+    margin-top:28px;max-width:58ch;font-size:18px;color:var(--slate);
+    animation:rise .7s .55s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .hero p.lede a{border-bottom:1.5px solid var(--crimson);color:var(--ink);transition:color .15s}
+  .hero p.lede a:hover{color:var(--crimson)}
+  .hero .cta-row{margin-top:36px;display:flex;gap:14px;flex-wrap:wrap;animation:rise .7s .7s cubic-bezier(.2,.7,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+  .btn{
+    font-family:var(--font-mono);font-size:13px;letter-spacing:.06em;
+    padding:12px 22px;border:1.5px solid var(--ink);display:inline-block;
+    position:relative;overflow:hidden;z-index:1;
+    transition:color .25s,border-color .25s,transform .25s,box-shadow .25s;
+  }
+  .btn::before{
+    content:"";position:absolute;inset:0;background:var(--crimson);z-index:-1;
+    transform:translateX(-101%);transition:transform .3s cubic-bezier(.2,.7,.2,1);
+  }
+  .btn:hover{transform:translateY(-2px);border-color:var(--crimson);color:#fff;box-shadow:0 8px 20px rgba(200,16,46,.22)}
+  .btn:hover::before{transform:translateX(0)}
+  .btn.primary{background:var(--ink);color:#fff}
+  .hero .ridge{position:absolute;right:-30px;bottom:0;width:min(44vw,520px);pointer-events:none;will-change:transform}
+  .hero .ridge .draw{
+    stroke-dasharray:340;stroke-dashoffset:340;
+    animation:draw 1.6s .8s cubic-bezier(.4,0,.2,1) forwards;
+  }
+  @keyframes draw{to{stroke-dashoffset:0}}
+  .hero .ridge .layer-1{animation:drift 9s ease-in-out infinite}
+  .hero .ridge .layer-2{animation:drift 7s 1.2s ease-in-out infinite}
+  @keyframes drift{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+  @media(max-width:880px){.hero .ridge{display:none}}
+
+  /* ───── stack ticker ───── */
+  .ticker{
+    background:var(--ink);color:#fff;overflow:hidden;
+    border-bottom:1px solid var(--line);
+    font-family:var(--font-mono);font-size:13px;letter-spacing:.12em;text-transform:uppercase;
+  }
+  .ticker .track{
+    display:flex;gap:0;width:max-content;
+    animation:scroll 26s linear infinite;
+  }
+  .ticker:hover .track{animation-play-state:paused}
+  .ticker span{padding:12px 0 12px 28px;white-space:nowrap}
+  .ticker .sep{color:var(--crimson)}
+  @keyframes scroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+
+  /* ───── sections ───── */
+  section{padding:76px 0;border-bottom:1px solid var(--line)}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:44px}
+  .sec-head .tag{
+    font-family:var(--font-mono);font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--crimson);white-space:nowrap;
+  }
+  .sec-head .rule{flex:1;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform 1.1s .15s cubic-bezier(.2,.7,.2,1)}
+  .sec-head.reveal.in .rule{transform:scaleX(1)}
+
+  /* ───── career ───── */
+  .career{display:grid;grid-template-columns:1fr 1fr;gap:48px}
+  @media(max-width:760px){.career{grid-template-columns:1fr}}
+  .role{
+    background:var(--bg-raised);border:1px solid var(--line);padding:32px;
+    transition:transform .3s cubic-bezier(.2,.7,.2,1),box-shadow .3s,border-color .3s,
+      opacity .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .role:hover{transform:translateY(-4px);box-shadow:0 14px 36px rgba(16,21,29,.09);border-color:var(--crimson)}
+  .role .when{font-family:var(--font-mono);font-size:12px;color:var(--crimson);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
+  .role h3{font-family:var(--font-display);font-weight:800;font-size:22px;letter-spacing:-.01em}
+  .role h4{font-weight:500;color:var(--slate);font-size:15px;margin:2px 0 16px}
+  .role h3 a{border-bottom:2px solid var(--crimson);transition:color .15s}
+  .role h3 a:hover{color:var(--crimson)}
+  .role p{color:var(--slate);font-size:15px}
+  .role ul.stack{list-style:none;display:flex;flex-wrap:wrap;gap:8px;margin-top:20px}
+  .role ul.stack li{
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+    border:1px solid var(--line);padding:4px 10px;color:var(--slate);background:var(--bg);
+    transition:border-color .2s,color .2s,transform .2s;
+  }
+  .role ul.stack li:hover{border-color:var(--crimson);color:var(--crimson);transform:translateY(-2px)}
+
+  /* ───── capabilities ───── */
+  .caps{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
+  @media(max-width:900px){.caps{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:520px){.caps{grid-template-columns:1fr}}
+  .cap{background:var(--bg-raised);padding:28px 24px;transition:background .2s}
+  .cap:hover{background:#fff}
+  .cap .glyph{
+    font-family:var(--font-mono);font-size:13px;color:var(--crimson);margin-bottom:14px;
+    display:inline-block;transition:transform .35s cubic-bezier(.3,1.6,.4,1);
+  }
+  .cap:hover .glyph{transform:translateY(-4px) rotate(-8deg) scale(1.25)}
+  .cap h3{font-family:var(--font-display);font-weight:700;font-size:17px;margin-bottom:10px;letter-spacing:-.01em}
+  .cap p{font-size:14px;color:var(--slate)}
+
+  /* ───── work ───── */
+  .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+  @media(max-width:900px){.projects{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:560px){.projects{grid-template-columns:1fr}}
+  .project{
+    background:var(--bg-raised);border:1px solid var(--line);display:flex;flex-direction:column;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),box-shadow .35s,border-color .35s,
+      opacity .8s cubic-bezier(.2,.7,.2,1);
+  }
+  .project:hover{transform:translateY(-6px);box-shadow:0 18px 44px rgba(16,21,29,.12);border-color:var(--crimson)}
+  .project .thumb{aspect-ratio:16/10;overflow:hidden;border-bottom:1px solid var(--line)}
+  .project .thumb img{
+    width:100%;height:100%;object-fit:cover;filter:saturate(.92);
+    transition:transform .6s cubic-bezier(.2,.7,.2,1),filter .6s;
+  }
+  .project:hover .thumb img{transform:scale(1.06);filter:saturate(1.05)}
+  .project .body{padding:22px 22px 24px;display:flex;flex-direction:column;flex:1}
+  .project .kind{font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--crimson);margin-bottom:10px}
+  .project h3{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.01em;margin-bottom:8px}
+  .project p{font-size:14px;color:var(--slate);flex:1}
+  .project .link{
+    margin-top:16px;font-family:var(--font-mono);font-size:12px;letter-spacing:.06em;color:var(--ink);
+    border-bottom:1.5px solid var(--crimson);align-self:flex-start;transition:color .15s;
+  }
+  .project .link i{display:inline-block;font-style:normal;transition:transform .25s cubic-bezier(.2,.7,.2,1)}
+  .project .link:hover{color:var(--crimson)}
+  .project .link:hover i{transform:translateX(5px)}
+  .design-row{margin-top:48px}
+  .design-row h3{font-family:var(--font-display);font-weight:700;font-size:18px;margin-bottom:18px;letter-spacing:-.01em;color:var(--slate)}
+  .design-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  @media(max-width:560px){.design-grid{grid-template-columns:1fr}}
+  .design-grid figure{border:1px solid var(--line);background:var(--bg-raised);overflow:hidden;transition:border-color .3s,transform .3s,opacity .8s cubic-bezier(.2,.7,.2,1)}
+  .design-grid figure:hover{border-color:var(--crimson);transform:translateY(-3px)}
+  .design-grid .imgbox{overflow:hidden}
+  .design-grid img{aspect-ratio:16/10;object-fit:cover;width:100%;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .design-grid figure:hover img{transform:scale(1.05)}
+  .design-grid figcaption{font-family:var(--font-mono);font-size:11px;letter-spacing:.06em;color:var(--slate);padding:10px 14px;border-top:1px solid var(--line)}
+
+  /* ───── writing ───── */
+  .posts{list-style:none}
+  .posts li{border-top:1px solid var(--line)}
+  .posts li:last-child{border-bottom:1px solid var(--line)}
+  .posts a{
+    display:grid;grid-template-columns:110px 1fr auto;gap:24px;align-items:baseline;
+    padding:22px 4px;transition:background .2s,padding-left .25s cubic-bezier(.2,.7,.2,1);
+  }
+  .posts a:hover{background:var(--bg-raised);padding-left:16px}
+  .posts a:hover .post-title{color:var(--crimson)}
+  .posts a:hover .arrow{transform:translate(4px,-4px);color:var(--crimson)}
+  .posts .date{font-family:var(--font-mono);font-size:12px;color:var(--slate)}
+  .posts .post-title{font-family:var(--font-display);font-weight:700;font-size:18px;letter-spacing:-.01em;transition:color .2s}
+  .posts .arrow{font-family:var(--font-mono);color:var(--slate);display:inline-block;transition:transform .25s,color .25s}
+  @media(max-width:640px){.posts a{grid-template-columns:1fr auto}.posts .date{grid-column:1/-1}}
+
+  /* ───── contact / footer ───── */
+  .contact{border-bottom:none;padding-bottom:56px}
+  .contact h2{
+    font-family:var(--font-display);font-weight:900;
+    font-size:clamp(34px,6vw,64px);letter-spacing:-.025em;line-height:1.02;
+    max-width:18ch;margin-bottom:28px;
+  }
+  .contact h2 a{
+    border-bottom:4px solid var(--crimson);
+    background:linear-gradient(var(--crimson),var(--crimson)) no-repeat left bottom / 100% 0%;
+    transition:background-size .35s cubic-bezier(.2,.7,.2,1),color .35s;
+  }
+  .contact h2 a:hover{background-size:100% 100%;color:#fff}
+  .socials{display:flex;gap:24px;flex-wrap:wrap;font-family:var(--font-mono);font-size:13px;letter-spacing:.05em;margin-top:8px}
+  .socials a{color:var(--slate);border-bottom:1px solid transparent;transition:color .2s,border-color .2s,transform .2s;display:inline-block}
+  .socials a:hover{color:var(--crimson);border-color:var(--crimson);transform:translateY(-2px)}
+  footer{
+    border-top:1px solid var(--line);background:var(--bg-raised);
+    font-family:var(--font-mono);font-size:11px;letter-spacing:.05em;color:var(--slate);
+  }
+  footer .wrap{display:flex;justify-content:space-between;gap:16px;padding-top:18px;padding-bottom:18px;flex-wrap:wrap}
+
+  /* ───── reduced motion ───── */
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    *,*::before,*::after{animation:none!important;transition:none!important}
+    .reveal,.sec-head .rule{opacity:1!important;transform:none!important}
+    .hero .ridge .draw{stroke-dashoffset:0}
+    .ticker .track{transform:none}
+  }
+</style>
 </head>
-
 <body>
-	
-	<!-- Page -->
-	<div class="page">
 
-		<!-- Preloader -->
-		<div class="preloader">
-			<div class="centrize full-width">
-				<div class="vertical-center">
-					<div class="spinner">
-						<div class="double-bounce1"></div>
-						<div class="double-bounce2"></div>
-					</div>
-				</div>
-			</div>
-		</div>
+<!-- dual-city telemetry strip -->
+<div class="telemetry" aria-label="Location and time">
+  <div class="wrap">
+    <span><span class="dot pulse">▲</span> KTM 27.7172° N, 85.3240° E <b id="ktm-time">--:--</b> NPT</span>
+    <span>RAMAN AMATYA <span class="dot">/</span> SOFTWARE ENGINEER</span>
+    <span>SYD 33.8688° S, 151.2093° E <b id="syd-time">--:--</b> AEST <span class="dot pulse">●</span></span>
+  </div>
+</div>
 
-		<header class="header">
-			<div class="fw">
-				<div class="logo">
-					<a href="#">R.</a>
-				</div>
-				<a href="#" class="menu-btn"><span></span></a>
-				<div class="top-menu">
-					<ul>
-						<li><a href="#about-section">About</a></li>
-						<li><a href="#services-section">What I Do</a></li>
-						<li><a href="#works-section">Work</a></li>
-						<li><a href="#blog-section">Blog</a></li>
-						<!-- <li><a href="#contact-section">Contact</a></li> -->
-					</ul>
-					<a href="#" class="close"></a>
-				</div>
-			</div>
-		</header>
-		
-		<!-- Container -->
-		<div class="container">
+<header>
+  <nav class="nav wrap" aria-label="Main">
+    <a class="mark" href="#top" aria-label="Raman Amatya — home">
+      <svg class="pennant" viewBox="0 0 32 40" aria-hidden="true"><path d="M4 0 L28 11 L11 16 L30 25 L4 40 Z" fill="#C8102E"/></svg>
+      Raman Amatya
+    </a>
+    <ul>
+      <li><a href="#now">Now</a></li>
+      <li><a href="#work">Work</a></li>
+      <li><a href="#writing">Writing</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+</header>
 
-			<!-- Section Started -->
-			<div class="section started">
-				<div class="slide" style="background-image: url(images/cover-bg-1.jpg);"></div>
-				<div class="centrize full-width">
-					<div class="vertical-center">
-						<div class="st-title align-center">
-							<div class="typing-title">
-								<p>Engineer</p>
-								<p>Frontend</p>
-								<p>Web App Dev</p>
-								<p>Mobile Apps</p>
-								<p>UI/UX Design</p>
-								<p>Analytics</p>
-							</div>
-							<span class="typed-title"></span>
-						</div>
-					</div>
-				</div>
-				<a href="#" class="mouse-btn"><i class="icon fas fa-chevron-down"></i></a>
-			</div>
+<main id="top">
+  <!-- hero -->
+  <section class="hero">
+    <div class="wrap">
+      <p class="eyebrow">Kathmandu-born · Sydney-based</p>
+      <h1>
+        <span class="w" style="animation-delay:.10s">Full-stack</span>
+        <span class="w" style="animation-delay:.22s">engineer</span>
+        <span class="w" style="animation-delay:.34s">building</span>
+        <span class="w" style="animation-delay:.46s">products</span>
+        <span class="w" style="animation-delay:.58s">end</span>
+        <span class="w" style="animation-delay:.66s">to</span>
+        <span class="w" style="animation-delay:.74s">end</span><em>.</em>
+      </h1>
+      <p class="lede">
+        I design and ship web software — Node.js services on the back, React and TypeScript on the front,
+        AWS underneath. Currently building construction-tech at
+        <a href="https://canibuild.com/en-au/" target="_blank" rel="noopener">Canibuild</a> in Sydney.
+      </p>
+      <div class="cta-row">
+        <a class="btn primary" href="#work">See my work</a>
+        <a class="btn ghost" href="mailto:ramanamatya@gmail.com">Email me</a>
+      </div>
+    </div>
+    <!-- Himalaya-to-harbour ridgeline -->
+    <svg class="ridge" id="ridge" viewBox="0 0 520 200" aria-hidden="true" fill="none">
+      <path class="layer-1" d="M0 200 L60 120 L95 150 L150 60 L185 110 L230 30 L275 105 L320 70 L370 130 L420 100 L470 150 L520 125 L520 200 Z" fill="#C9D3DD" opacity=".55"/>
+      <path class="layer-2" d="M0 200 L80 160 L130 180 L210 110 L260 150 L330 95 L390 160 L450 140 L520 170 L520 200 Z" fill="#C8102E" opacity=".14"/>
+      <path class="draw" d="M150 60 L230 30 L275 105" stroke="#C8102E" stroke-width="2"/>
+    </svg>
+  </section>
 
-			<!-- Section About -->
-			<div class="section about align-left" id="about-section">
-				<div class="fw">
-					<div class="text-box">
-						<h1 class="animated">I'm Raman Amatya, <br />Software Engineer, React Developer <br />from Nepal, Kathmandu. <br />Currently I reside in Sydney, Australia</h1>
-						<p class="animated">
-							I come from the beautiful Himalayan Nation- Nepal. My interest overlaps Engineering and Design. My curiosity and interest has led me to establish myself as a Software Developer. My working style is being free, coming up with new approaches to solve underlying problems in development and enjoying every moment while I am building a product.						
-						</p>
-						<p class="animated">It has been many years since I have started developing Applications. Currenly I am working as a <b>FullStack Developer</b> at <a href="https://canibuild.com/en-au/" target="_blank">Canibuild</a> involved in developing microservices based on Node.js and frontend involving React and Typescript.</p>
-						<p class="animated">Previously I worked as a <b>Sr. Software Engineer</b> at <a href="https://www.cloudfactory.com/" target="_blank">CloudFactory</a> involved in developing various microservices build in React, Golang in an AWS environment. <br/> I have experience of leading team and managing projects as well.</p>
-					</div>
-					<!-- <div class="bts">
-						<a href="./document/RamanCV_updated.pdf" target="_blank" class="btn extra animated">Download Resume</a>
-					</div> -->
-				</div>
-			</div>
+  <!-- stack ticker -->
+  <div class="ticker" aria-hidden="true">
+    <div class="track">
+      <span>Node.js</span><span class="sep">✦</span><span>React</span><span class="sep">✦</span><span>TypeScript</span><span class="sep">✦</span><span>AWS</span><span class="sep">✦</span><span>SQL Server</span><span class="sep">✦</span><span>React Native</span><span class="sep">✦</span><span>Golang</span><span class="sep">✦</span><span>GraphQL</span><span class="sep">✦</span><span>UI / UX</span><span class="sep">✦</span>
+      <span>Node.js</span><span class="sep">✦</span><span>React</span><span class="sep">✦</span><span>TypeScript</span><span class="sep">✦</span><span>AWS</span><span class="sep">✦</span><span>SQL Server</span><span class="sep">✦</span><span>React Native</span><span class="sep">✦</span><span>Golang</span><span class="sep">✦</span><span>GraphQL</span><span class="sep">✦</span><span>UI / UX</span><span class="sep">✦</span>
+    </div>
+  </div>
 
-			<!-- Section Services -->
-			<div class="section services gray align-left" id="services-section">
-				<div class="fw">
-					<div class="titles animated">
-						<div class="title">What I Do</div>
-					</div>
-					<div class="row">
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon fas fa-blog"></i></div>
-								<div class="name">Web App</div>
-								<p>Bacisally build web apps using MERN stack, with React at front, Node as backend services and Mongodb as database.</p>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon fas fa-mobile-alt"></i></i></div>
-								<div class="name">Mobile Apps</div>
-								<p>Native Andriod and IOS mobile app development based on React Native library and designs.</p>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon fas fa-magic"></i></div>
-								<div class="name">Web Design</div>
-								<p>Based on user experience aspects of website. Focused on designing websites for desktop browsers along with design for mobile and tablet.</p>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon far fa-clone"></i></div>
-								<div class="name">UI/UX Design</div>
-								<p>User research to defining a project’s strategy, scope, and information architecture, to developing sitemaps and wireframes</p>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon far fa-lightbulb"></i></div>
-								<div class="name">Logo Design</div>
-								<p>Design logos based on user's requirement that reflects the client's vision. Photoshop is used for the designs</p>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-4">
-							<div class="service-item animated">
-								<div class="circle"><i class="icon fas fa-chart-line"></i></div>
-								<div class="name">Analytics</div>
-								<p>Analyzing raw data in order to make conclusions about that information. Automated techniques into mechanical processes and algorithms that work over raw data for human consumption.</p>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
+  <!-- now / before -->
+  <section id="now">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="tag">Career</span><span class="rule"></span></div>
+      <div class="career">
+        <article class="role reveal">
+          <p class="when">Now</p>
+          <h3><a href="https://canibuild.com/en-au/" target="_blank" rel="noopener">Canibuild</a></h3>
+          <h4>Full-stack Developer · Sydney</h4>
+          <p>Building a platform that helps builders qualify sites and sell faster — Node.js microservices,
+             React + TypeScript frontends, SQL Server data work, and integrations with property platforms
+             like REA and Domain.</p>
+          <ul class="stack">
+            <li>Node.js</li><li>React</li><li>TypeScript</li><li>SQL Server</li><li>AWS · EKS</li>
+          </ul>
+        </article>
+        <article class="role reveal" style="--d:.15s">
+          <p class="when">Before</p>
+          <h3><a href="https://www.cloudfactory.com/" target="_blank" rel="noopener">CloudFactory</a></h3>
+          <h4>Senior Software Engineer · Kathmandu</h4>
+          <p>Built microservices for a global workforce platform in React and Golang on AWS.
+             Led a team, ran projects, and shipped features used by thousands of cloud workers.</p>
+          <ul class="stack">
+            <li>React</li><li>Golang</li><li>AWS</li><li>Team lead</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
 
-			<!-- Work section -->
-			<div class="section works align-left" id="works-section">
-				<div class="fw">
-					<div class="titles animated">
-						<div class="title">Works</div>
-						<p>Since working on some products doesn't have much freedom to express them on public. Here is some of my pet work.</p>
-					</div>
-					<div class="row box-items">
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-6" class="has-popup"><img src="images/works/ccc.jpg" alt="" /></a>
-									</div>
-									<div class="category">Web App</div>
-									<div class="name">
-										<a href="#popup-6" class="has-popup">Children's Century Classics</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-6" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/ccc.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">Web App</div>
-										<h4>Webpoint Website</h4>
-										<p>
-											A Web App build on React, Redux with feature such as stripe payment, Audio player, Quiz, login.<br/>
-											The app is available in two languages, English and Spanish.
-										</p>
-										<a href="https://www.childrenscenturyclassics.com/" class="btn" target="_blank">View The App</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-5" class="has-popup"><img src="images/works/webpoint.jpg" alt="" /></a>
-									</div>
-									<div class="category">Website</div>
-									<div class="name">
-										<a href="#popup-5" class="has-popup">Webpoint Website</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-5" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/webpoint.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">WebSite</div>
-										<h4>Webpoint Website</h4>
-										<p>
-											This website is build on Gatsby, A Static-Site Generation Web Framework.<br/>
-											Technology used are React, Style Compoenent, Graphql. <br/>
-											I was a part of the team to develop this website. This website is owned by Webpoint.
-										</p>
-										<a href="https://www.webpoint.io/" class="btn" target="_blank">View Website</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-1" class="has-popup"><img src="images/works/covid-live.jpg" alt="" /></a>
-									</div>
-									<div class="category">Web App</div>
-									<div class="name">
-										<a href="#popup-1" class="has-popup">Covid-19 webapp based on Nepal</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-1" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/covid-live.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">Web App</div>
-										<h4>Covid-19 webapp based on Nepal</h4>
-										<p>
-											A simple Covid-19 tracking web app specially for Nepal. Also have feature to view other countries. <br/>
-											My part in this is to maintain UI development and frontend. <br/>
-											The web app is owned by Samit Ghimire. Follow him on twitter <a target="blank" href="https://twitter.com/samit_gh" target="_blank">@samit_gh</a>
-										</p>
-										<a href="https://covid-asia.live/" class="btn" target="_blank">View Project</a>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-2" class="has-popup"><img src="images/works/fcc.jpg" alt="" /></a>
-									</div>
-									<div class="category">Banner</div>
-									<div class="name">
-										<a href="#popup-2" class="has-popup">freeCodeCamp Kathmandu</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-2" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/fcc.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">Banner</div>
-										<h4>freeCodeCamp Kathmandu</h4>
-										<p>
-											The freebie banner design for freeCodeCamp held in Kathmandu.
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-3" class="has-popup"><img src="images/works/JStees.jpg" alt="" /></a>
-									</div>
-									<div class="category">T-shirt Design</div>
-									<div class="name">
-										<a href="#popup-3" class="has-popup">JS T-shirt design</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-3" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/JStees.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">T-shirt Design</div>
-										<h4>Javascript T-shirt design</h4>
-										<p>
-											Today I'm happy to share with you the design of a t-shirt based on most of the Javascript libraries being use in technology today.
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-6 col-d-6 box-item">
-							<div class="item animated">
-								<div class="desc">
-									<div class="image">
-										<a href="#popup-4" class="has-popup"><img src="images/works/uiux.jpg" alt="" /></a>
-									</div>
-									<div class="category">Logo Design</div>
-									<div class="name">
-										<a href="#popup-4" class="has-popup">Classic UI/UX logo design</a>
-									</div>
-								</div>
-							</div>
-							<div id="popup-4" class="popup-box mfp-fade mfp-hide">
-								<div class="content">
-									<div class="image">
-										<img src="images/works/uiux.jpg" alt="">
-									</div>
-									<div class="desc">
-										<div class="category">Logo Design</div>
-										<h4>Classic UI/UX logo design</h4>
-										<p>
-											Classic UI/UX loge based on human representation. 
-										</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					<div class="clear"></div>
-				</div>
-			</div>
-			
-			<!-- Blog -->
-			<div class="section works align-left gray" id="blog-section">
-				<div class="fw">
-					<div class="titles animated">
-						<div class="title">Latest Blogs</div>
-					</div>
-					<div class="row blog-items">
-						<div class="col col-m-12 col-t-4 col-d-4">
-							<div class="blog-item animated">
-								<div class="image">
-									<a href="https://medium.com/devnetwork/what-design-means-for-scale-up-46a79506b5ee" target="_blank"><img src="images/blog/design-at-scale.jpg" alt="" /></a>
-								</div>
-								<a href="https://medium.com/devnetwork/what-design-means-for-scale-up-46a79506b5ee" target="_blank" class="name">What design means for Scale up?</a>
-								<p>Design can make a huge different in terms of scaling up the work.</p>
-								<div class="date">Jul 19, 2018</div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-4 col-d-4">
-							<div class="blog-item animated">
-								<div class="image">
-									<a href="https://medium.com/devnetwork/node-js-in-api-18caf6e3cdd" target="_blank"><img src="images/blog/node-api.jpg" alt="" /></a>
-								</div>
-								<a href="https://medium.com/devnetwork/node-js-in-api-18caf6e3cdd" target="_blank" class="name">Node.js in API</a>
-								<p>How building an api on Node.js actually looks like and how to implement them.</p>
-								<div class="date">May 31, 2019 </div>
-							</div>
-						</div>
-						<div class="col col-m-12 col-t-4 col-d-4">
-							<div class="blog-item animated">
-								<div class="image">
-									<a href="https://ramann.medium.com/go-server-less-with-react-and-aws-lambda-24f8ffbadb17" target="_blank"><img src="images/blog/serverless.jpg" alt="" /></a>
-								</div>
-								<a href="https://ramann.medium.com/go-server-less-with-react-and-aws-lambda-24f8ffbadb17" target="_blank" class="name">Go Server less with React and AWS lambda</a>
-								<p>Server less implementation with React and AWS lambda</p>
-								<div class="date">April 14, 2021 </div>
-							</div>
-						</div>
-						<br/>
-						<div class="col col-m-12 col-t-4 col-d-4">
-							<div class="blog-item animated">
-								<div class="image">
-									<a href="#" target="_blank"><img src="images/blog/aws-dynamo.jpg" alt="" /></a>
-								</div>
-								<a href="#" target="_blank" class="name">Developing Flexible, NoSQL Solutions with Amazon DynamoDB using Cloud9 and Javascript SDK</a>
-								<p>Developing Flexible, NoSQL Solutions with Amazon DynamoDB using Cloud9 and Javascript SDK</p>
-								<div class="date">April 14, 2021 </div>
-							</div>
-						</div>
-					</div>
-					<div class="clear"></div>
-				</div>
-			</div>
+  <!-- what I do -->
+  <section id="capabilities">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="tag">What I do</span><span class="rule"></span></div>
+      <div class="caps">
+        <div class="cap reveal">
+          <p class="glyph">&lt;/&gt;</p>
+          <h3>Web applications</h3>
+          <p>End-to-end product builds — React and TypeScript frontends backed by Node.js services and real databases.</p>
+        </div>
+        <div class="cap reveal" style="--d:.1s">
+          <p class="glyph">{ }</p>
+          <h3>APIs &amp; services</h3>
+          <p>Microservices, integrations, and data pipelines on AWS — Lambda, EKS, SQS, and the plumbing between them.</p>
+        </div>
+        <div class="cap reveal" style="--d:.2s">
+          <p class="glyph">[ ]</p>
+          <h3>Mobile apps</h3>
+          <p>Native-feeling iOS and Android apps built with React Native, from design handoff to store release.</p>
+        </div>
+        <div class="cap reveal" style="--d:.3s">
+          <p class="glyph">◆</p>
+          <h3>UI &amp; brand design</h3>
+          <p>Interface design grounded in user research — plus the occasional logo, banner, or t-shirt when the brief is fun.</p>
+        </div>
+      </div>
+    </div>
+  </section>
 
-			<!-- Section Contacts currently disabled
-			<div class="section contacts align-left" id="contact-section">
-				<div class="fw">
-					<div class="titles animated">
-						<div class="title">Contact Me</div>
-					</div>
-					<div class="contact-form">
-						<form id="cform" method="post">
-							<div class="row">
-								<div class="col col-m-12 col-t-6 col-d-6 animated">
-									<div class="value">
-										<input type="text" name="name" placeholder="Name *" />
-									</div>
-								</div>
-								<div class="col col-m-12 col-t-6 col-d-6 animated">
-									<div class="value">
-										<input type="tel" name="tel" placeholder="Phone *" />
-									</div>
-								</div>
-								<div class="col col-m-12 col-t-6 col-d-6 animated">
-									<div class="value">
-										<input type="text" name="email" placeholder="Email *" />
-									</div>
-								</div>
-								<div class="col col-m-12 col-t-6 col-d-6 animated">
-									<div class="value">
-										<input type="text" name="subject" placeholder="Subject *" />
-									</div>
-								</div>
-								<div class="col col-m-12 col-t-12 col-d-12 animated">
-									<div class="value">
-										<textarea name="message" placeholder="Message"></textarea>
-									</div>
-								</div>
-								<div class="col col-m-12 col-t-12 col-d-12 animated">
-									<a href="#" class="btn" onclick="$('#cform').submit(); return false;">Send Message</a>
-								</div>
-							</div>
-						</form>
-						<div class="alert-success">
-							<p>Thanks, your message is sent successfully. We will contact you shortly!</p>
-						</div>
-					</div>
-				</div>
-			</div>  -->
+  <!-- work -->
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="tag">Selected work</span><span class="rule"></span></div>
+      <div class="projects">
+        <article class="project reveal">
+          <div class="thumb"><img src="https://ramanamatya.com.np/images/works/ccc.jpg" alt="Children's Century Classics web app" loading="lazy"></div>
+          <div class="body">
+            <p class="kind">Web app</p>
+            <h3>Children's Century Classics</h3>
+            <p>Bilingual (English/Spanish) React + Redux app with Stripe payments, an audio player, quizzes, and auth.</p>
+            <a class="link" href="https://www.childrenscenturyclassics.com/" target="_blank" rel="noopener">Visit the app <i>→</i></a>
+          </div>
+        </article>
+        <article class="project reveal" style="--d:.12s">
+          <div class="thumb"><img src="https://ramanamatya.com.np/images/works/webpoint.jpg" alt="Webpoint website" loading="lazy"></div>
+          <div class="body">
+            <p class="kind">Website</p>
+            <h3>Webpoint</h3>
+            <p>Static-generated marketing site built with Gatsby, styled-components, and GraphQL as part of the Webpoint team.</p>
+            <a class="link" href="https://www.webpoint.io/" target="_blank" rel="noopener">Visit the site <i>→</i></a>
+          </div>
+        </article>
+        <article class="project reveal" style="--d:.24s">
+          <div class="thumb"><img src="https://ramanamatya.com.np/images/works/covid-live.jpg" alt="Covid-19 tracker for Nepal" loading="lazy"></div>
+          <div class="body">
+            <p class="kind">Web app</p>
+            <h3>Covid-19 Nepal tracker</h3>
+            <p>Live case-tracking dashboard for Nepal with country comparisons. I owned the UI and frontend build.</p>
+            <a class="link" href="https://covid-asia.live/" target="_blank" rel="noopener">View the project <i>→</i></a>
+          </div>
+        </article>
+      </div>
 
-			<!-- Footer -->
-			<footer class="align-center">
-				<div class="copy animated">Question or any queries? <a href="mailto:ramanamatya@gmail.com">Email me</a>.</div>
-				<div class="st-soc animated">
-					<a target="blank" href="https://twitter.com/ramanamatya" target="_blank"><i class="icon fab fa-twitter"></i></a>
-					<a target="blank" href="https://www.linkedin.com/in/ramanamatya" target="_blank"><i class="icon fab fa-linkedin"></i></a>
-					<a target="blank" href="https://github.com/ramanamatya" target="_blank"><i class="icon fab fa-github"></i></a>
-					<a target="blank" href="https://medium.com/@ramann" target="_blank"><i class="icon fab fa-medium-m"></i></a>
-				</div>
-				<br/>
-				<div class="copy animated">© <span id="year"></span> Raman. all rights reserved.</div>
-			</footer>
-			
-		</div>
+      <div class="design-row">
+        <h3 class="reveal">Design pieces</h3>
+        <div class="design-grid">
+          <figure class="reveal">
+            <div class="imgbox"><img src="https://ramanamatya.com.np/images/works/fcc.jpg" alt="freeCodeCamp Kathmandu banner" loading="lazy"></div>
+            <figcaption>freeCodeCamp Kathmandu — event banner</figcaption>
+          </figure>
+          <figure class="reveal" style="--d:.12s">
+            <div class="imgbox"><img src="https://ramanamatya.com.np/images/works/JStees.jpg" alt="JavaScript libraries t-shirt design" loading="lazy"></div>
+            <figcaption>JavaScript libraries — t-shirt design</figcaption>
+          </figure>
+          <figure class="reveal" style="--d:.24s">
+            <div class="imgbox"><img src="https://ramanamatya.com.np/images/works/uiux.jpg" alt="UI/UX logo design" loading="lazy"></div>
+            <figcaption>Classic UI/UX — logo design</figcaption>
+          </figure>
+        </div>
+      </div>
+    </div>
+  </section>
 
-	</div>
-	
-	<!-- jQuery Scripts -->
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/jquery.validate.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/scrollReveal.js/3.3.1/scrollreveal.min.js"></script>
-	<script src="//cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.1.0/jquery.magnific-popup.min.js"></script>
-	<script src="//cdn.jsdelivr.net/npm/typed.js@1.1.1/dist/typed.min.js"></script>
-	
-	<!-- Main Scripts -->
-	<script src="js/main.js"></script>
-	
+  <!-- writing -->
+  <section id="writing">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="tag">Writing</span><span class="rule"></span></div>
+      <ul class="posts">
+        <li class="reveal">
+          <a href="https://ramann.medium.com/go-server-less-with-react-and-aws-lambda-24f8ffbadb17" target="_blank" rel="noopener">
+            <span class="date">Apr 2021</span>
+            <span class="post-title">Go serverless with React and AWS Lambda</span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+        <li class="reveal" style="--d:.1s">
+          <a href="https://medium.com/devnetwork/node-js-in-api-18caf6e3cdd" target="_blank" rel="noopener">
+            <span class="date">May 2019</span>
+            <span class="post-title">Node.js in API</span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+        <li class="reveal" style="--d:.2s">
+          <a href="https://medium.com/devnetwork/what-design-means-for-scale-up-46a79506b5ee" target="_blank" rel="noopener">
+            <span class="date">Jul 2018</span>
+            <span class="post-title">What design means for scale-up</span>
+            <span class="arrow">↗</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- contact -->
+  <section id="contact" class="contact">
+    <div class="wrap">
+      <div class="sec-head reveal"><span class="tag">Contact</span><span class="rule"></span></div>
+      <h2 class="reveal">Have a project or a question? <a href="mailto:ramanamatya@gmail.com">Email me</a>.</h2>
+      <div class="socials reveal" style="--d:.15s">
+        <a href="https://github.com/ramanamatya" target="_blank" rel="noopener">GitHub</a>
+        <a href="https://www.linkedin.com/in/ramanamatya" target="_blank" rel="noopener">LinkedIn</a>
+        <a href="https://twitter.com/ramanamatya" target="_blank" rel="noopener">Twitter</a>
+        <a href="https://medium.com/@ramann" target="_blank" rel="noopener">Medium</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>© <span id="year">2026</span> Raman Amatya</span>
+    <span>KTM → SYD · built with care</span>
+  </div>
+</footer>
+
+<script>
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // live dual-city clocks (Kathmandu runs UTC+5:45)
+  function tick(){
+    var f = function(tz){
+      return new Intl.DateTimeFormat('en-AU',{hour:'2-digit',minute:'2-digit',hour12:false,timeZone:tz}).format(new Date());
+    };
+    document.getElementById('ktm-time').textContent = f('Asia/Kathmandu');
+    document.getElementById('syd-time').textContent = f('Australia/Sydney');
+  }
+  tick(); setInterval(tick, 30000);
+  document.getElementById('year').textContent = new Date().getFullYear();
+
+  // scroll-triggered reveals
+  var targets = document.querySelectorAll('.reveal');
+  if (reduced || !('IntersectionObserver' in window)) {
+    targets.forEach(function(el){ el.classList.add('in'); });
+  } else {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    targets.forEach(function(el){ io.observe(el); });
+  }
+
+  // gentle parallax on the hero ridgeline
+  var ridge = document.getElementById('ridge');
+  if (ridge && !reduced) {
+    var ticking = false;
+    window.addEventListener('scroll', function(){
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function(){
+        ridge.style.transform = 'translateY(' + Math.min(window.scrollY * 0.12, 80) + 'px)';
+        ticking = false;
+      });
+    }, { passive: true });
+  }
+</script>
+
 </body>
 </html>
