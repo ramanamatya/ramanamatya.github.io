@@ -1,842 +1,539 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Fortnightly Payslip Calculator</title>
-  <style>
-    :root {
-      --bg: #f5f7fb;
-      --card-bg: #ffffff;
-      --primary: #2563eb;
-      --primary-dark: #1d4ed8;
-      --primary-soft: #e0ecff;
-      --border: #dde2ee;
-      --text-main: #111827;
-      --text-muted: #6b7280;
-      --danger: #dc2626;
-      --radius-lg: 12px;
-      --radius-md: 8px;
-      --shadow-soft: 0 12px 30px rgba(15, 23, 42, 0.08);
-    }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Advanced Fortnightly Payslip — Aged Care Nursing</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14323A;
+    --ink-soft:#46626A;
+    --teal:#0E7268;
+    --teal-deep:#0A4F49;
+    --teal-tint:#E4F2EF;
+    --paper:#F7FBFA;
+    --card:#FFFFFF;
+    --line:#D8E6E2;
+    --amber:#B45309;
+    --amber-tint:#FBF1E3;
+    --rose:#9F1239;
+    --rose-tint:#FBEAEE;
+    --radius:10px;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+    --body:'Public Sans',system-ui,sans-serif;
+    --display:'Sora',var(--body);
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--paper);color:var(--ink);
+    font-family:var(--body);font-size:15px;line-height:1.5;
+  }
+  .wrap{max-width:1060px;margin:0 auto;padding:28px 20px 80px}
 
-    * {
-      box-sizing: border-box;
-    }
+  /* ---------- header ---------- */
+  header.page{
+    background:var(--teal-deep);color:#EDF7F5;border-radius:var(--radius);
+    padding:26px 28px 24px;margin-bottom:26px;
+    background-image:
+      linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px);
+    background-size:100% 34px;
+  }
+  header.page h1{
+    font-family:var(--display);font-weight:700;font-size:clamp(20px,3.4vw,28px);
+    margin:0 0 6px;letter-spacing:-.01em;
+  }
+  header.page p{margin:0;color:#BCD9D3;font-size:14px;max-width:62ch}
 
-    body {
-      margin: 0;
-      padding: 24px;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: radial-gradient(circle at top left, #eff6ff 0, #f9fafb 40%, #f3f4f6 100%);
-      color: var(--text-main);
-    }
+  /* ---------- panels ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:22px;overflow:hidden}
+  .panel>h2{
+    font-family:var(--display);font-size:15px;font-weight:600;margin:0;
+    padding:14px 18px;border-bottom:1px solid var(--line);
+    display:flex;align-items:center;gap:10px;
+  }
+  .panel>h2 .tag{
+    font-family:var(--mono);font-size:11px;font-weight:500;color:var(--teal);
+    background:var(--teal-tint);border-radius:4px;padding:2px 7px;letter-spacing:.04em;
+  }
+  .panel-body{padding:18px}
 
-    .app-shell {
-      max-width: 1100px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-    }
+  .grid{display:grid;gap:14px}
+  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+  .grid.cols-4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:760px){.grid.cols-3,.grid.cols-4{grid-template-columns:1fr 1fr}}
+  @media(max-width:430px){.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}}
 
-    .header-card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      padding: 20px 24px 16px;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      backdrop-filter: blur(12px);
-    }
+  label.field{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
+  label.field span.hint{font-weight:400;color:#7E9994;font-size:11.5px}
+  label.field input{margin-top:auto}
+  input[type=number],input[type=text]{
+    font-family:var(--mono);font-size:14px;color:var(--ink);
+    border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:#FCFEFD;width:100%;
+  }
+  input[type=number]:focus,input[type=text]:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
+  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{margin-left:4px}
 
-    .header-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 16px;
-      flex-wrap: wrap;
-    }
+  details.settings{border-top:1px dashed var(--line)}
+  details.settings summary{
+    cursor:pointer;padding:12px 18px;font-size:13px;font-weight:600;color:var(--teal);
+    list-style:none;display:flex;align-items:center;gap:8px;user-select:none;
+  }
+  details.settings summary::before{content:"▸";transition:transform .15s}
+  details.settings[open] summary::before{transform:rotate(90deg)}
+  details.settings .panel-body{border-top:1px solid var(--line)}
+  .settings-note{font-size:12px;color:#7E9994;margin:0 0 14px}
 
-    h1 {
-      margin: 0;
-      font-size: 1.5rem;
-      letter-spacing: 0.01em;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-    }
+  /* ---------- roster tables ---------- */
+  .table-scroll{overflow-x:auto}
+  table.roster{border-collapse:collapse;width:100%;min-width:860px;font-size:13px}
+  table.roster th,table.roster td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:center;white-space:nowrap}
+  table.roster th{
+    font-family:var(--display);font-weight:600;font-size:11.5px;color:var(--ink-soft);
+    text-transform:uppercase;letter-spacing:.05em;background:#F2F8F6;
+  }
+  table.roster td.day{font-weight:600;text-align:left;font-size:13.5px}
+  table.roster tr.weekend td.day{color:var(--teal)}
+  table.roster tr:last-child td{border-bottom:none}
+  table.roster input[type=checkbox]{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
+  table.roster input.ph-check{accent-color:var(--amber)}
+  table.roster input.hours{width:74px;text-align:right;padding:5px 8px;font-size:13px}
+  table.roster input.hours:disabled{background:#F1F5F4;color:#A8BCB7;border-color:#E4ECEA}
+  tr.is-ph td{background:var(--amber-tint)}
 
-    h1 span.badge {
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 8px;
-      border-radius: 999px;
-      background: var(--primary-soft);
-      color: var(--primary-dark);
-      text-transform: uppercase;
-    }
+  /* ---------- actions ---------- */
+  .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+  button{
+    font-family:var(--display);font-weight:600;font-size:14.5px;cursor:pointer;
+    border-radius:8px;padding:11px 22px;border:1px solid transparent;
+  }
+  button.primary{background:var(--teal);color:#fff}
+  button.primary:hover{background:var(--teal-deep)}
+  button.ghost{background:transparent;color:var(--teal);border-color:var(--teal)}
+  button.ghost:hover{background:var(--teal-tint)}
+  button:focus-visible{outline:3px solid #79C7BD;outline-offset:2px}
 
-    .subtitle {
-      margin: 8px 0 0;
-      font-size: 0.9rem;
-      color: var(--text-muted);
-    }
+  /* ---------- payslip ---------- */
+  #payslip{display:none;margin-top:30px}
+  .slip{
+    background:#fff;border:1px solid var(--line);border-radius:4px;
+    max-width:760px;margin:0 auto;position:relative;
+    box-shadow:0 14px 34px rgba(20,50,58,.10);
+    font-size:13.5px;
+  }
+  /* perforated payslip edge */
+  .slip::before,.slip::after{
+    content:"";position:absolute;top:0;bottom:0;width:14px;
+    background-image:radial-gradient(circle at 7px 10px, var(--paper) 4px, transparent 4.5px);
+    background-size:14px 22px;background-repeat:repeat-y;
+  }
+  .slip::before{left:-1px}
+  .slip::after{right:-1px}
+  .slip-inner{padding:30px 40px 34px}
+  .slip-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px;flex-wrap:wrap}
+  .slip-head h3{font-family:var(--display);font-size:19px;font-weight:700;margin:0 0 2px}
+  .slip-head .sub{font-size:12px;color:var(--ink-soft)}
+  .slip-head .meta{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink-soft)}
+  .slip-head .meta strong{color:var(--ink)}
 
-    .salary-block {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      padding: 10px 12px;
-      border-radius: var(--radius-md);
-      background: #f9fafb;
-      border: 1px solid var(--border);
-      min-width: 280px;
-    }
+  table.lines{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
+  table.lines th{
+    text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
+    color:var(--ink-soft);border-bottom:1px solid var(--line);padding:6px 4px;font-family:var(--display);
+  }
+  table.lines th.num,table.lines td.num{text-align:right;font-family:var(--mono)}
+  table.lines td{padding:7px 4px;border-bottom:1px dotted #E2ECE9}
+  table.lines td:first-child{font-weight:500}
+  table.lines td .ln-note{display:block;font-size:11px;color:#7E9994;font-weight:400}
+  table.lines tr.section td{
+    font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:var(--teal);border-bottom:1px solid var(--line);padding-top:14px;
+  }
+  table.lines tr.gross td{font-weight:600;border-top:1.5px solid var(--ink);border-bottom:none;padding-top:10px}
 
-    .input-label {
-      font-weight: 600;
-      font-size: 0.85rem;
-      white-space: nowrap;
-    }
+  .totals{margin-top:18px;border-top:2px solid var(--ink);padding-top:12px}
+  .totals .row{display:flex;justify-content:space-between;padding:5px 4px;font-variant-numeric:tabular-nums}
+  .totals .row .v{font-family:var(--mono)}
+  .totals .row.neg .v{color:var(--rose)}
+  .totals .row.net{
+    background:var(--teal-tint);border-radius:6px;margin-top:8px;padding:11px 12px;
+    font-family:var(--display);font-weight:700;font-size:16px;
+  }
+  .totals .row.net .v{font-family:var(--mono);font-weight:600;color:var(--teal-deep)}
+  .totals .row.benefit{font-size:12.5px;color:var(--ink-soft)}
+  .slip-foot{margin-top:18px;font-size:11px;color:#8AA29D;border-top:1px dotted var(--line);padding-top:10px}
 
-    .salary-input {
-      flex: 1;
-      padding: 6px 10px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 0.9rem;
-      outline: none;
-      min-width: 0;
-    }
+  .empty-msg{max-width:760px;margin:0 auto;text-align:center;color:var(--ink-soft);background:var(--rose-tint);border:1px solid #F2D4DC;border-radius:var(--radius);padding:16px}
 
-    .salary-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
-    }
-
-    .content-grid {
-      display: grid;
-      grid-template-columns: minmax(0, 1.4fr);
-      gap: 20px;
-    }
-
-    .card {
-      background: var(--card-bg);
-      border-radius: var(--radius-lg);
-      box-shadow: var(--shadow-soft);
-      padding: 18px 20px 20px;
-    }
-
-    h2 {
-      margin: 0 0 10px;
-      font-size: 1.1rem;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-
-    h2 span.week-tag {
-      font-size: 0.7rem;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      padding: 2px 8px;
-      border-radius: 999px;
-      background: #f3f4ff;
-      color: #4b5563;
-    }
-
-    .section-description {
-      margin: 0 0 12px;
-      font-size: 0.85rem;
-      color: var(--text-muted);
-    }
-
-    .table-wrapper {
-      border-radius: var(--radius-md);
-      border: 1px solid var(--border);
-      overflow: hidden;
-      background: #fcfcff;
-      max-height: 360px;
-      overflow-x: auto;
-      overflow-y: auto;
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      min-width: 720px;
-      font-size: 0.85rem;
-    }
-
-    th, td {
-      padding: 6px 8px;
-      text-align: center;
-      border-bottom: 1px solid #e5e7eb;
-    }
-
-    th {
-      background: #f3f4ff;
-      position: sticky;
-      top: 0;
-      z-index: 1;
-      font-weight: 600;
-      color: #374151;
-      font-size: 0.8rem;
-    }
-
-    tbody tr:nth-child(even) {
-      background-color: #f9fafb;
-    }
-
-    tbody tr:hover {
-      background-color: #eef2ff;
-    }
-
-    td:first-child, th:first-child {
-      text-align: left;
-      padding-left: 12px;
-      white-space: nowrap;
-    }
-
-    .sick-input {
-      width: 90px;
-      padding: 4px 6px;
-      border-radius: 6px;
-      border: 1px solid var(--border);
-      font-size: 0.8rem;
-      outline: none;
-      display: none; /* hidden until Sick Leave is checked */
-    }
-
-    .sick-input:focus {
-      border-color: var(--primary);
-      box-shadow: 0 0 0 1px rgba(37, 99, 235, 0.18);
-    }
-
-    .cat-checkbox {
-      width: 16px;
-      height: 16px;
-      cursor: pointer;
-      accent-color: var(--primary);
-    }
-
-    .actions {
-      display: flex;
-      justify-content: flex-end;
-      margin-top: 12px;
-    }
-
-    #generateBtn {
-      border: none;
-      border-radius: 999px;
-      padding: 10px 22px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-      color: #ffffff;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      box-shadow: 0 8px 18px rgba(37, 99, 235, 0.35);
-      transition: transform 0.08s ease, box-shadow 0.08s ease, filter 0.12s ease;
-    }
-
-    #generateBtn:hover {
-      filter: brightness(1.03);
-      transform: translateY(-1px);
-      box-shadow: 0 10px 24px rgba(37, 99, 235, 0.45);
-    }
-
-    #generateBtn:active {
-      transform: translateY(0);
-      box-shadow: 0 5px 12px rgba(37, 99, 235, 0.35);
-    }
-
-    #generateBtn::after {
-      content: "→";
-      font-size: 1rem;
-    }
-
-    #results {
-      margin-top: 10px;
-    }
-
-    #results h2 {
-      margin-top: 0;
-    }
-
-    #results table {
-      margin-top: 10px;
-      background: #ffffff;
-      border-radius: var(--radius-md);
-      overflow: hidden;
-    }
-
-    #results th {
-      background: #111827;
-      color: #f9fafb;
-    }
-
-    #results td {
-      border-color: #e5e7eb;
-    }
-
-    #results h3 {
-      margin-top: 20px;
-      font-size: 1rem;
-    }
-
-    @media (max-width: 768px) {
-      body {
-        padding: 16px;
-      }
-
-      .header-card {
-        padding: 16px 14px 12px;
-      }
-
-      .salary-block {
-        width: 100%;
-      }
-
-      .card {
-        padding: 14px 14px 16px;
-      }
-    }
-  </style>
+  @media print{
+    body{background:#fff}
+    .panel,header.page,.actions,details.settings{display:none!important}
+    #payslip{display:block!important;margin:0}
+    .slip{box-shadow:none;border:none}
+    .slip::before,.slip::after{display:none}
+  }
+  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media(max-width:640px){.slip-inner{padding:22px 20px}}
+</style>
 </head>
 <body>
-  <div class="app-shell">
-    <!-- HEADER / TITLE / SALARY INPUT -->
-    <div class="header-card">
-      <div class="header-top">
-        <div>
-          <h1>
-            Fortnightly Payslip Calculator
-            <span class="badge">Nursing Shifts</span>
-          </h1>
-          <p class="subtitle">
-            Select one or more categories for each day (you can work multiple shifts in a day).
-            For Sick Leave, enter hours (default is <strong>7.5</strong> if left blank).
-          </p>
-        </div>
-        <div class="salary-block">
-          <label class="input-label" for="salaryPackage">Salary Packaging<br />(per fortnight)</label>
-          <input
-            type="number"
-            id="salaryPackage"
-            class="salary-input"
-            step="0.01"
-            min="0"
-            placeholder="0.00"
-            value="611"
-          />
-        </div>
+<div class="wrap">
+
+  <header class="page">
+    <h1>Advanced Fortnightly Payslip</h1>
+    <p>Aged care nursing shifts — ordinary time, evening loading, weekend penalties, public holidays, overtime and sick leave, with salary packaging and PAYG estimated per fortnight.</p>
+  </header>
+
+  <!-- ============ PAY SETUP ============ -->
+  <section class="panel">
+    <h2>Pay setup <span class="tag">RATES</span></h2>
+    <div class="panel-body">
+      <div class="grid cols-3">
+        <label class="field">Base hourly rate ($)
+          <input type="number" id="baseRate" step="0.01" min="0" value="36.50">
+        </label>
+        <label class="field">Salary packaging ($ per fortnight)
+          <span class="hint">Pre-tax amount redirected to your packaging provider</span>
+          <input type="number" id="salaryPackaging" step="0.01" min="0" value="611.50">
+        </label>
+        <label class="field">Sick leave default hours
+          <input type="number" id="sickDefault" step="0.25" min="0" value="7.5">
+        </label>
       </div>
     </div>
 
-    <!-- MAIN CONTENT -->
-    <form id="payslipForm" class="content-grid">
-      <div class="card">
-        <h2>Week 1 <span class="week-tag">Mon – Sun</span></h2>
-        <p class="section-description">
-          Tick your worked shift(s) and optionally add Sick Leave hours for each day.
-        </p>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>7AM–3PM<br />(Morning)</th>
-                <th>3PM–9PM</th>
-                <th>3PM–10PM</th>
-                <th>3PM–10:30PM</th>
-                <th>Sick Leave</th>
-                <th>Sick Leave Hours</th>
-              </tr>
-            </thead>
-            <tbody id="week1Body">
-              <!-- Week 1: Monday to Sunday -->
-              <tr data-day="Monday" data-week="1">
-                <td>Monday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Tuesday" data-week="1">
-                <td>Tuesday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Wednesday" data-week="1">
-                <td>Wednesday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Thursday" data-week="1">
-                <td>Thursday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Friday" data-week="1">
-                <td>Friday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Saturday" data-week="1">
-                <td>Saturday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Sunday" data-week="1">
-                <td>Sunday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-            </tbody>
-          </table>
+    <details class="settings">
+      <summary>Loadings, penalties &amp; shift hours (editable)</summary>
+      <div class="panel-body">
+        <p class="settings-note">Defaults follow common Nurses Award–style aged care settings. Weekend and public holiday penalties <em>replace</em> the evening shift loading (the higher rate applies — they don't stack). Adjust anything to match your agreement.</p>
+        <div class="grid cols-4">
+          <label class="field">Evening shift loading (%)
+            <span class="hint">3PM-finish shifts, Mon–Fri</span>
+            <input type="number" id="pcEvening" step="0.1" value="12.5">
+          </label>
+          <label class="field">Saturday rate (% of base)
+            <input type="number" id="pcSat" step="1" value="150">
+          </label>
+          <label class="field">Sunday rate (% of base)
+            <input type="number" id="pcSun" step="1" value="175">
+          </label>
+          <label class="field">Public holiday rate (% of base)
+            <input type="number" id="pcPH" step="1" value="250">
+          </label>
+          <label class="field">Overtime — first 2 hrs (% of base)
+            <input type="number" id="pcOT1" step="1" value="150">
+          </label>
+          <label class="field">Overtime — after 2 hrs (% of base)
+            <input type="number" id="pcOT2" step="1" value="200">
+          </label>
+          <label class="field">Sunday overtime (% of base)
+            <input type="number" id="pcOTSun" step="1" value="200">
+          </label>
+          <label class="field">Public holiday overtime (% of base)
+            <input type="number" id="pcOTPH" step="1" value="250">
+          </label>
+        </div>
+        <div class="grid cols-4" style="margin-top:14px">
+          <label class="field">7AM–3PM paid hours
+            <input type="number" id="hMorning" step="0.25" value="7.5">
+          </label>
+          <label class="field">3PM–9PM paid hours
+            <input type="number" id="hEve9" step="0.25" value="6">
+          </label>
+          <label class="field">3PM–10PM paid hours
+            <input type="number" id="hEve10" step="0.25" value="7">
+          </label>
+          <label class="field">3PM–10:30PM paid hours
+            <input type="number" id="hEve1030" step="0.25" value="7.5">
+          </label>
         </div>
       </div>
+    </details>
+  </section>
 
-      <div class="card">
-        <h2>Week 2 <span class="week-tag">Mon – Sun</span></h2>
-        <p class="section-description">
-          Repeat your shift selection for the second week of the fortnight.
-        </p>
-        <div class="table-wrapper">
-          <table>
-            <thead>
-              <tr>
-                <th>Day</th>
-                <th>7AM–3PM<br />(Morning)</th>
-                <th>3PM–9PM</th>
-                <th>3PM–10PM</th>
-                <th>3PM–10:30PM</th>
-                <th>Sick Leave</th>
-                <th>Sick Leave Hours</th>
-              </tr>
-            </thead>
-            <tbody id="week2Body">
-              <!-- Week 2: Monday to Sunday -->
-              <tr data-day="Monday" data-week="2">
-                <td>Monday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Tuesday" data-week="2">
-                <td>Tuesday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Wednesday" data-week="2">
-                <td>Wednesday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Thursday" data-week="2">
-                <td>Thursday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Friday" data-week="2">
-                <td>Friday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Saturday" data-week="2">
-                <td>Saturday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-              <tr data-day="Sunday" data-week="2">
-                <td>Sunday</td>
-                <td><input type="checkbox" class="cat-checkbox" value="7AM-3PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-9PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="3PM-10:30PM" /></td>
-                <td><input type="checkbox" class="cat-checkbox" value="Sick Leave" /></td>
-                <td><input type="number" step="0.1" min="0" class="sick-input" placeholder="Default 7.5" /></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+  <!-- ============ ROSTER ============ -->
+  <section class="panel" id="rosterPanel">
+    <h2>Week 1 — Mon to Sun <span class="tag">ROSTER</span></h2>
+    <div class="panel-body table-scroll">
+      <table class="roster" data-week="1"></table>
+    </div>
+  </section>
 
-        <div class="actions">
-          <button type="button" id="generateBtn">Generate Payslip</button>
-        </div>
-      </div>
-    </form>
+  <section class="panel">
+    <h2>Week 2 — Mon to Sun <span class="tag">ROSTER</span></h2>
+    <div class="panel-body table-scroll">
+      <table class="roster" data-week="2"></table>
+    </div>
+  </section>
 
-    <div id="results"></div>
+  <div class="actions">
+    <button class="primary" id="btnGenerate">Generate payslip</button>
+    <button class="ghost" id="btnPrint">Print payslip</button>
+    <button class="ghost" id="btnReset">Clear roster</button>
   </div>
 
-  <script>
-    // Constants and mappings
-    const baseRate = 35.36;
-    const breakTime = 0.5; // 30 minutes break per shift
+  <!-- ============ PAYSLIP ============ -->
+  <section id="payslip" aria-live="polite"></section>
 
-    // Mapping for each shift category (scheduled and net hours)
-    const shiftMapping = {
-      "7AM-3PM": { scheduled: 8, net: 8 - breakTime },
-      "3PM-9PM": { scheduled: 6, net: 6 - breakTime },
-      "3PM-10PM": { scheduled: 7, net: 7 - breakTime },
-      "3PM-10:30PM": { scheduled: 7.5, net: 7.5 - breakTime }
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+  var SHIFTS = [
+    { key:"morning", label:"7AM–3PM", hoursInput:"hMorning", evening:false },
+    { key:"eve9",    label:"3PM–9PM", hoursInput:"hEve9",    evening:true  },
+    { key:"eve10",   label:"3PM–10PM",hoursInput:"hEve10",   evening:true  },
+    { key:"eve1030", label:"3PM–10:30PM",hoursInput:"hEve1030",evening:true }
+  ];
+
+  /* ---------- build roster tables ---------- */
+  function buildRoster(table){
+    var week = table.getAttribute("data-week");
+    var html = "<thead><tr><th style='text-align:left'>Day</th>";
+    SHIFTS.forEach(function(s){ html += "<th>"+s.label+"</th>"; });
+    html += "<th>Overtime hrs</th><th>Public holiday</th><th>Sick leave</th><th>Sick hrs</th></tr></thead><tbody>";
+    DAYS.forEach(function(d,i){
+      var isWknd = i>=5;
+      var id = "w"+week+"d"+i;
+      html += "<tr class='"+(isWknd?"weekend":"")+"' id='row-"+id+"'>";
+      html += "<td class='day'>"+d+"</td>";
+      SHIFTS.forEach(function(s){
+        html += "<td><input type='checkbox' id='"+id+"-"+s.key+"' aria-label='"+d+" week "+week+" "+s.label+"'></td>";
+      });
+      html += "<td><input type='number' class='hours' id='"+id+"-ot' min='0' step='0.25' placeholder='0' aria-label='"+d+" week "+week+" overtime hours'></td>";
+      html += "<td><input type='checkbox' class='ph-check' id='"+id+"-ph' aria-label='"+d+" week "+week+" public holiday'></td>";
+      html += "<td><input type='checkbox' id='"+id+"-sick' aria-label='"+d+" week "+week+" sick leave'></td>";
+      html += "<td><input type='number' class='hours' id='"+id+"-sickhrs' min='0' step='0.25' placeholder='7.5' disabled aria-label='"+d+" week "+week+" sick leave hours'></td>";
+      html += "</tr>";
+    });
+    html += "</tbody>";
+    table.innerHTML = html;
+  }
+  document.querySelectorAll("table.roster").forEach(buildRoster);
+
+  /* enable sick-hours input only when sick leave ticked; tint PH rows */
+  document.addEventListener("change", function(e){
+    var t = e.target;
+    if (t.id && t.id.slice(-5) === "-sick"){
+      var hrs = document.getElementById(t.id + "hrs");
+      hrs.disabled = !t.checked;
+      if (t.checked && !hrs.value) hrs.placeholder = num(val("sickDefault",7.5)).toString();
+      if (!t.checked) hrs.value = "";
+    }
+    if (t.classList.contains("ph-check")){
+      t.closest("tr").classList.toggle("is-ph", t.checked);
+    }
+  });
+
+  /* ---------- helpers ---------- */
+  function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
+  function val(id, fallback){
+    var n = parseFloat(document.getElementById(id).value);
+    return isFinite(n) ? n : (fallback || 0);
+  }
+  function money(n){
+    return "$" + Math.abs(n).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2});
+  }
+  function fmtH(h){ return h.toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+
+  /* ---------- PAYG estimate (2025–26 resident, tax-free threshold, annualised) ---------- */
+  function annualTax(income){
+    if (income <= 18200) return 0;
+    var tax = 0;
+    if (income > 190000) tax += (income-190000)*0.45, income = 190000;
+    if (income > 135000) tax += (income-135000)*0.37, income = 135000;
+    if (income > 45000)  tax += (income-45000)*0.30,  income = 45000;
+    if (income > 18200)  tax += (income-18200)*0.16;
+    return tax;
+  }
+  function medicareLevy(income){
+    var lower = 27222, upper = 34027; // single low-income shading band
+    if (income <= lower) return 0;
+    if (income <= upper) return (income - lower) * 0.10;
+    return income * 0.02;
+  }
+  function fortnightTax(taxableFortnight){
+    if (taxableFortnight <= 0) return 0;
+    var annual = taxableFortnight * 26;
+    var t = (annualTax(annual) + medicareLevy(annual)) / 26;
+    return Math.max(0, Math.round(t * 100) / 100);
+  }
+
+  /* ---------- calculation engine ---------- */
+  function calculate(){
+    var base = val("baseRate");
+    var cfg = {
+      evening: val("pcEvening")/100,
+      sat:  val("pcSat")/100,
+      sun:  val("pcSun")/100,
+      ph:   val("pcPH")/100,
+      ot1:  val("pcOT1")/100,
+      ot2:  val("pcOT2")/100,
+      otSun:val("pcOTSun")/100,
+      otPH: val("pcOTPH")/100
+    };
+    var sickDefault = val("sickDefault", 7.5);
+
+    // accumulators: { hours, multiplier }
+    var acc = {
+      ordinary:   {label:"Ordinary hours", note:"Weekday, base rate", h:0, m:1},
+      eveBase:    {label:"Evening shift — base", note:"Weekday 3PM-finish shifts", h:0, m:1},
+      eveLoad:    {label:"Evening shift loading", note:(val("pcEvening"))+"% of base", h:0, m:cfg.evening},
+      sat:        {label:"Saturday penalty rate", note:val("pcSat")+"% of base", h:0, m:cfg.sat},
+      sun:        {label:"Sunday penalty rate", note:val("pcSun")+"% of base", h:0, m:cfg.sun},
+      ph:         {label:"Public holiday rate", note:val("pcPH")+"% of base", h:0, m:cfg.ph},
+      ot1:        {label:"Overtime — first 2 hrs/day", note:val("pcOT1")+"% of base", h:0, m:cfg.ot1},
+      ot2:        {label:"Overtime — after 2 hrs/day", note:val("pcOT2")+"% of base", h:0, m:cfg.ot2},
+      otSun:      {label:"Overtime — Sunday", note:val("pcOTSun")+"% of base", h:0, m:cfg.otSun},
+      otPH:       {label:"Overtime — public holiday", note:val("pcOTPH")+"% of base", h:0, m:cfg.otPH},
+      sick:       {label:"Sick leave (paid)", note:"Base rate", h:0, m:1}
     };
 
-    // For afternoon shifts, maximum hours eligible for after6PM loading
-    const after6Mapping = {
-      "3PM-9PM": 3,
-      "3PM-10PM": 4,
-      "3PM-10:30PM": 4.5
-    };
+    var anyEntry = false;
 
-    // Show/hide the sick leave input when its checkbox is toggled.
-    document.querySelectorAll(".cat-checkbox").forEach(cb => {
-      cb.addEventListener("change", function () {
-        if (this.value === "Sick Leave") {
-          let row = this.closest("tr");
-          let sickInput = row.querySelector(".sick-input");
-          if (sickInput) {
-            sickInput.style.display = this.checked ? "inline-block" : "none";
+    [1,2].forEach(function(week){
+      DAYS.forEach(function(d,i){
+        var id = "w"+week+"d"+i;
+        var isSat = (i===5), isSun = (i===6);
+        var isPH  = document.getElementById(id+"-ph").checked;
+
+        // shift hours for the day
+        var shiftH = 0, eveH = 0;
+        SHIFTS.forEach(function(s){
+          if (document.getElementById(id+"-"+s.key).checked){
+            var h = val(s.hoursInput);
+            shiftH += h;
+            if (s.evening) eveH += h;
+            anyEntry = true;
           }
+        });
+
+        // classify ordinary/shift hours by day type (penalties replace evening loading)
+        if (shiftH > 0){
+          if (isPH)       acc.ph.h  += shiftH;
+          else if (isSun) acc.sun.h += shiftH;
+          else if (isSat) acc.sat.h += shiftH;
+          else {
+            var morningH = shiftH - eveH;
+            acc.ordinary.h += morningH;
+            acc.eveBase.h  += eveH;
+            acc.eveLoad.h  += eveH;
+          }
+        }
+
+        // overtime
+        var ot = num(document.getElementById(id+"-ot").value);
+        if (ot > 0){
+          anyEntry = true;
+          if (isPH)       acc.otPH.h  += ot;
+          else if (isSun) acc.otSun.h += ot;
+          else {
+            var first = Math.min(ot, 2);
+            acc.ot1.h += first;
+            acc.ot2.h += ot - first;
+          }
+        }
+
+        // sick leave
+        if (document.getElementById(id+"-sick").checked){
+          anyEntry = true;
+          var sh = document.getElementById(id+"-sickhrs").value;
+          acc.sick.h += sh === "" ? sickDefault : num(sh);
         }
       });
     });
 
-    // Define day order for sorting (Monday=1,...,Sunday=7)
-    const dayOrder = {
-      Monday: 1,
-      Tuesday: 2,
-      Wednesday: 3,
-      Thursday: 4,
-      Friday: 5,
-      Saturday: 6,
-      Sunday: 7
-    };
+    if (!anyEntry) return null;
 
-    // Function to calculate annual tax based on tax brackets.
-    function calculateAnnualTax(income) {
-      let tax = 0;
-      if (income <= 18200) {
-        tax = 0;
-      } else if (income <= 45000) {
-        tax = (income - 18200) * 0.16;
-      } else if (income <= 135000) {
-        tax = 4288 + (income - 45000) * 0.30;
-      } else if (income <= 190000) {
-        tax = 31288 + (income - 135000) * 0.37;
-      } else {
-        tax = 51638 + (income - 190000) * 0.45;
-      }
-      return tax;
+    // build payslip lines
+    var lines = [], gross = 0, totalHours = 0;
+    var order = ["ordinary","eveBase","eveLoad","sat","sun","ph","ot1","ot2","otSun","otPH","sick"];
+    order.forEach(function(k){
+      var a = acc[k];
+      if (a.h <= 0) return;
+      var rate = base * a.m;
+      var amt = a.h * rate;
+      gross += amt;
+      if (k !== "eveLoad") totalHours += a.h;  // loading line shares hours already counted
+      lines.push({label:a.label, note:a.note, hours:a.h, rate:rate, amount:amt});
+    });
+
+    var packaging = Math.min(val("salaryPackaging"), gross);
+    var taxable = Math.max(0, gross - packaging);
+    var tax = fortnightTax(taxable);
+    var takeHome = taxable - tax;
+
+    return {
+      base:base, lines:lines, gross:gross, totalHours:totalHours,
+      packaging:packaging, taxable:taxable, tax:tax,
+      takeHome:takeHome, totalBenefit: takeHome + packaging
+    };
+  }
+
+  /* ---------- render ---------- */
+  function render(){
+    var out = document.getElementById("payslip");
+    var r = calculate();
+    if (!r){
+      out.style.display = "block";
+      out.innerHTML = "<div class='empty-msg'>Nothing to calculate yet — tick at least one shift, overtime entry or sick leave day in the roster above.</div>";
+      out.scrollIntoView({behavior:"smooth",block:"start"});
+      return;
     }
 
-    // Generate payslip on button click.
-    document.getElementById("generateBtn").addEventListener("click", function () {
-      // Retrieve Salary Package value.
-      let salaryPackage = parseFloat(document.getElementById("salaryPackage").value) || 0;
+    var today = new Date().toLocaleDateString("en-AU",{day:"2-digit",month:"short",year:"numeric"});
+    var rows = r.lines.map(function(l){
+      return "<tr><td>"+l.label+"<span class='ln-note'>"+l.note+"</span></td>" +
+             "<td class='num'>"+fmtH(l.hours)+"</td>" +
+             "<td class='num'>"+money(l.rate)+"</td>" +
+             "<td class='num'>"+money(l.amount)+"</td></tr>";
+    }).join("");
 
-      // Gather entries for both weeks.
-      let entries = [];
+    out.style.display = "block";
+    out.innerHTML =
+      "<div class='slip'><div class='slip-inner'>" +
+        "<div class='slip-head'>" +
+          "<div><h3>Fortnightly Payslip</h3><div class='sub'>Aged care nursing — estimate</div></div>" +
+          "<div class='meta'>Generated <strong>"+today+"</strong><br>Base rate <strong>"+money(r.base)+"/hr</strong></div>" +
+        "</div>" +
+        "<table class='lines'>" +
+          "<thead><tr><th>Earnings</th><th class='num'>Hours</th><th class='num'>Rate</th><th class='num'>Amount</th></tr></thead>" +
+          "<tbody>" + rows +
+            "<tr class='gross'><td>Gross earnings</td><td class='num'>"+fmtH(r.totalHours)+"</td><td class='num'></td><td class='num'>"+money(r.gross)+"</td></tr>" +
+          "</tbody>" +
+        "</table>" +
+        "<div class='totals'>" +
+          "<div class='row neg'><span>Less salary packaging (pre-tax)</span><span class='v'>− "+money(r.packaging)+"</span></div>" +
+          "<div class='row'><span>Taxable income</span><span class='v'>"+money(r.taxable)+"</span></div>" +
+          "<div class='row neg'><span>PAYG withholding (estimate)</span><span class='v'>− "+money(r.tax)+"</span></div>" +
+          "<div class='row net'><span>Take-home pay (to bank)</span><span class='v'>"+money(r.takeHome)+"</span></div>" +
+          "<div class='row benefit'><span>Total benefit incl. packaged amount</span><span class='v'>"+money(r.totalBenefit)+"</span></div>" +
+        "</div>" +
+        "<div class='slip-foot'>PAYG is estimated from 2025–26 resident tax rates (tax-free threshold claimed) plus Medicare levy, annualised over 26 fortnights. Weekend and public holiday penalties replace the evening shift loading. This is a guide only — actual withholding on your employer payslip may differ slightly.</div>" +
+      "</div></div>";
 
-      function processRows(tbodyId, weekNum) {
-        document.querySelectorAll(`#${tbodyId} tr`).forEach(row => {
-          let day = row.getAttribute("data-day");
-          let week = row.getAttribute("data-week") || weekNum;
-          let checkedBoxes = row.querySelectorAll(".cat-checkbox:checked");
-          let scheduledTotal = 0;
-          let netTotal = 0;
-          let afternoonNet = 0;
-          let totalMaxAfter6 = 0;
-          let sickLeave = false;
-          let sickHours = 0;
+    out.scrollIntoView({behavior:"smooth",block:"start"});
+  }
 
-          checkedBoxes.forEach(box => {
-            let val = box.value;
-            if (val === "Sick Leave") {
-              sickLeave = true;
-              let input = row.querySelector(".sick-input");
-              sickHours = parseFloat(input.value);
-              if (isNaN(sickHours)) {
-                sickHours = 7.5;
-              }
-            } else if (shiftMapping[val]) {
-              scheduledTotal += shiftMapping[val].scheduled;
-              netTotal += shiftMapping[val].net;
-              if (val === "3PM-9PM" || val === "3PM-10PM" || val === "3PM-10:30PM") {
-                afternoonNet += shiftMapping[val].net;
-                totalMaxAfter6 += after6Mapping[val];
-              }
-            }
-          });
-
-          entries.push({
-            week: parseInt(week),
-            day: day,
-            scheduled: scheduledTotal,
-            net: netTotal,
-            afternoonNet: afternoonNet,
-            totalMaxAfter6: totalMaxAfter6,
-            sickLeave: sickLeave,
-            sickHours: sickHours
-          });
-        });
-      }
-
-      processRows("week1Body", 1);
-      processRows("week2Body", 2);
-
-      // Sort entries by week then day.
-      entries.sort((a, b) => {
-        if (a.week !== b.week) return a.week - b.week;
-        return dayOrder[a.day] - dayOrder[b.day];
-      });
-
-      // Totals for hours data.
-      let totalScheduled = 0,
-        totalNet = 0,
-        totalNormalHours = 0,
-        totalOTHours = 0;
-
-      let cumulativeEffective = 0; // Effective work hours (non-sick) across the fortnight.
-
-      // Monetary Totals.
-      let totalNormalPay = 0,
-        totalOvertimePay = 0,
-        totalUniformAllowance = 0,
-        totalLaundryAllowance = 0,
-        totalLeavePay = 0,
-        totalDailyPay = 0;
-
-      // New accumulators for extra shift loading by day.
-      let totalExtraLoadingSaturday = 0,
-        totalExtraLoadingSunday = 0;
-      // Accumulator for after6PM loading.
-      let totalAfter6Loading = 0;
-
-      let results = [];
-
-      entries.forEach(entry => {
-        // Sum hours for overall totals.
-        totalScheduled += entry.scheduled;
-        totalNet += entry.net;
-
-        // For work shifts, effective hours are net hours.
-        let effective = entry.net;
-
-        let normalHours = 0,
-          overtimeHours = 0;
-        if (effective > 0 && !entry.sickLeave) {
-          if (cumulativeEffective < 76) {
-            normalHours = Math.min(effective, 76 - cumulativeEffective);
-            overtimeHours = effective - normalHours;
-            cumulativeEffective += effective;
-          } else {
-            overtimeHours = effective;
-          }
-        }
-
-        totalNormalHours += normalHours;
-        totalOTHours += overtimeHours;
-
-        // For extra shift loading on Saturday/Sunday, now apply to ALL normal hours on that day.
-        let extraShiftLoading = 0;
-        if (entry.day === "Saturday" || entry.day === "Sunday") {
-          let factor = entry.day === "Saturday" ? 0.5 : 0.75;
-          extraShiftLoading = normalHours * baseRate * factor;
-          if (entry.day === "Saturday") {
-            totalExtraLoadingSaturday += extraShiftLoading;
-          } else {
-            totalExtraLoadingSunday += extraShiftLoading;
-          }
-        }
-
-        // After6PM loading for afternoon shifts.
-        let allocatedAfter6 = Math.min(
-          effective > 0 ? normalHours * (entry.afternoonNet / effective) : 0,
-          entry.totalMaxAfter6
-        );
-        // Ensure allocatedAfter6 doesn't exceed entry.totalMaxAfter6.
-        allocatedAfter6 = Math.min(
-          normalHours * (entry.afternoonNet / (effective || 1)),
-          entry.totalMaxAfter6
-        );
-        let after6Loading = allocatedAfter6 * baseRate * 0.125;
-        totalAfter6Loading += after6Loading;
-
-        let uniformAllowance = normalHours * 0.447;
-        let laundryAllowance = normalHours * 0.167;
-        let normalPay = normalHours * baseRate;
-
-        let overtimePay = 0;
-        if (overtimeHours > 0) {
-          if (overtimeHours <= 2) {
-            overtimePay = overtimeHours * baseRate * 1.5;
-          } else {
-            overtimePay = 2 * baseRate * 1.5 + (overtimeHours - 2) * baseRate * 2;
-          }
-        }
-
-        let leavePay = entry.sickLeave ? entry.sickHours * baseRate : 0;
-        let dailyTotal =
-          normalPay +
-          overtimePay +
-          extraShiftLoading +
-          after6Loading +
-          uniformAllowance +
-          laundryAllowance +
-          leavePay;
-
-        totalNormalPay += normalPay;
-        totalOvertimePay += overtimePay;
-        totalUniformAllowance += uniformAllowance;
-        totalLaundryAllowance += laundryAllowance;
-        totalLeavePay += leavePay;
-        totalDailyPay += dailyTotal;
-
-        results.push({
-          week: entry.week,
-          day: entry.day,
-          scheduled: entry.scheduled,
-          net: entry.net,
-          normalHours: normalHours,
-          overtimeHours: overtimeHours,
-          normalPay: normalPay,
-          overtimePay: overtimePay,
-          extraShiftLoading: extraShiftLoading,
-          after6Loading: after6Loading,
-          uniformAllowance: uniformAllowance,
-          laundryAllowance: laundryAllowance,
-          leavePay: leavePay,
-          dailyTotal: dailyTotal
-        });
-      });
-
-      // Build detailed day-by-day results table.
-      let resultHTML = "<div class='card'><h2>Fortnightly Payslip</h2>";
-      resultHTML +=
-        "<div class='table-wrapper'><table><thead><tr>" +
-        "<th>Week</th><th>Day</th><th>Scheduled</th><th>Net</th><th>Normal Hrs</th><th>OT Hrs</th>" +
-        "<th>Normal Pay</th><th>OT Pay</th><th>Extra Loading</th><th>After6 Loading</th>" +
-        "<th>Uniform</th><th>Laundry</th><th>Leave Pay</th><th>Total</th></tr></thead><tbody>";
-
-      results.forEach(r => {
-        resultHTML += `<tr>
-          <td>${r.week}</td>
-          <td>${r.day}</td>
-          <td>${r.scheduled.toFixed(2)}</td>
-          <td>${r.net.toFixed(2)}</td>
-          <td>${r.normalHours.toFixed(2)}</td>
-          <td>${r.overtimeHours.toFixed(2)}</td>
-          <td>$${r.normalPay.toFixed(2)}</td>
-          <td>$${r.overtimePay.toFixed(2)}</td>
-          <td>$${r.extraShiftLoading.toFixed(2)}</td>
-          <td>$${r.after6Loading.toFixed(2)}</td>
-          <td>$${r.uniformAllowance.toFixed(2)}</td>
-          <td>$${r.laundryAllowance.toFixed(2)}</td>
-          <td>$${r.leavePay.toFixed(2)}</td>
-          <td>$${r.dailyTotal.toFixed(2)}</td>
-        </tr>`;
-      });
-
-      resultHTML += "</tbody></table></div>";
-
-      // Adjust gross pay by subtracting Salary Package.
-      let adjustedFortnightGross = totalDailyPay - salaryPackage;
-      // Annualize the adjusted figure.
-      let annualAdjusted = adjustedFortnightGross * 26;
-      let annualTax = calculateAnnualTax(annualAdjusted);
-      let fortnightlyTax = annualTax / 26;
-      let netFortnightly = adjustedFortnightGross - fortnightlyTax;
-      let inHand = netFortnightly + salaryPackage;
-
-      // Overall totals
-      resultHTML += "<h3>Overall Totals</h3>";
-      resultHTML +=
-        "<table style='width: 100%; max-width: 520px'><thead><tr><th>Metric</th><th>Value</th></tr></thead><tbody>";
-      resultHTML += `<tr><td>Total Scheduled Hours</td><td>${totalScheduled.toFixed(2)}</td></tr>
-                     <tr><td>Total Net Hours</td><td>${totalNet.toFixed(2)}</td></tr>
-                     <tr><td>Total Normal Hours</td><td>${totalNormalHours.toFixed(2)}</td></tr>
-                     <tr><td>Total Overtime Hours</td><td>${totalOTHours.toFixed(2)}</td></tr>
-                     <tr><td>Total Normal Pay</td><td>$${totalNormalPay.toFixed(2)}</td></tr>
-                     <tr><td>Total Overtime Pay</td><td>$${totalOvertimePay.toFixed(2)}</td></tr>
-                     <tr><td>Total Extra Shift Loading Saturday</td><td>$${totalExtraLoadingSaturday.toFixed(2)}</td></tr>
-                     <tr><td>Total Extra Shift Loading Sunday</td><td>$${totalExtraLoadingSunday.toFixed(2)}</td></tr>
-                     <tr><td>Total After6PM Loading</td><td>$${totalAfter6Loading.toFixed(2)}</td></tr>
-                     <tr><td>Total Uniform Allowance</td><td>$${totalUniformAllowance.toFixed(2)}</td></tr>
-                     <tr><td>Total Laundry Allowance</td><td>$${totalLaundryAllowance.toFixed(2)}</td></tr>
-                     <tr><td>Total Leave Pay</td><td>$${totalLeavePay.toFixed(2)}</td></tr>
-                     <tr><td>Total Fortnightly Gross Pay</td><td>$${totalDailyPay.toFixed(2)}</td></tr>
-                     <tr><td>Salary Package Deduction</td><td>$${salaryPackage.toFixed(2)}</td></tr>
-                     <tr><td>Adjusted Fortnightly Gross</td><td>$${adjustedFortnightGross.toFixed(2)}</td></tr>
-                     <tr><td>Annual Adjusted Gross Income</td><td>$${annualAdjusted.toFixed(2)}</td></tr>
-                     <tr><td>Annual Tax</td><td>$${annualTax.toFixed(2)}</td></tr>
-                     <tr><td>Fortnightly Tax</td><td>$${fortnightlyTax.toFixed(2)}</td></tr>
-                     <tr><td>Fortnightly Net Income (After Tax & Deduction)</td><td><strong>$${netFortnightly.toFixed(
-                       2
-                     )}</strong></td></tr>
-                     <tr><td>Total Fortnightly Net Income (After Tax & Salary Packaging)</td><td><strong>$${inHand.toFixed(
-                       2
-                     )}</strong></td></tr>`;
-      resultHTML += "</tbody></table></div>";
-
-      document.getElementById("results").innerHTML = resultHTML;
-      // smooth scroll to results
-      document.getElementById("results").scrollIntoView({ behavior: "smooth", block: "start" });
-    });
-  </script>
+  document.getElementById("btnGenerate").addEventListener("click", render);
+  document.getElementById("btnPrint").addEventListener("click", function(){
+    if (document.getElementById("payslip").style.display !== "block") render();
+    window.print();
+  });
+  document.getElementById("btnReset").addEventListener("click", function(){
+    document.querySelectorAll("table.roster input[type=checkbox]").forEach(function(c){ c.checked = false; });
+    document.querySelectorAll("table.roster input.hours").forEach(function(h){ h.value = ""; if (h.id.slice(-7)==="sickhrs") h.disabled = true; });
+    document.querySelectorAll("table.roster tr.is-ph").forEach(function(tr){ tr.classList.remove("is-ph"); });
+    var out = document.getElementById("payslip");
+    out.style.display = "none"; out.innerHTML = "";
+  });
+})();
+</script>
 </body>
 </html>
