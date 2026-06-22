@@ -1,539 +1,512 @@
-<!DOCTYPE html>
+
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Advanced Fortnightly Payslip — Aged Care Nursing</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Public+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
-    --ink:#14323A;
-    --ink-soft:#46626A;
-    --teal:#0E7268;
-    --teal-deep:#0A4F49;
-    --teal-tint:#E4F2EF;
-    --paper:#F7FBFA;
-    --card:#FFFFFF;
-    --line:#D8E6E2;
-    --amber:#B45309;
-    --amber-tint:#FBF1E3;
-    --rose:#9F1239;
-    --rose-tint:#FBEAEE;
-    --radius:10px;
-    --mono:'JetBrains Mono',ui-monospace,monospace;
-    --body:'Public Sans',system-ui,sans-serif;
-    --display:'Sora',var(--body);
+    --ink:#1f2937;
+    --line:#111;
+    --muted:#6b7280;
+    --panel-line:#e5e7eb;
+    --accent:#0b6b5f;
+    --accent-soft:#dbeee9;
+    --bg:#f1f0ec;
+    --field-radius:8px;
   }
   *{box-sizing:border-box}
-  html{-webkit-text-size-adjust:100%}
+  html,body{margin:0;padding:0}
   body{
-    margin:0;background:var(--paper);color:var(--ink);
-    font-family:var(--body);font-size:15px;line-height:1.5;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.4;-webkit-text-size-adjust:100%;
   }
-  .wrap{max-width:1060px;margin:0 auto;padding:28px 20px 80px}
+  .wrap{max-width:1100px;margin:0 auto;padding:24px 16px 80px}
 
-  /* ---------- header ---------- */
-  header.page{
-    background:var(--teal-deep);color:#EDF7F5;border-radius:var(--radius);
-    padding:26px 28px 24px;margin-bottom:26px;
-    background-image:
-      linear-gradient(0deg, rgba(255,255,255,.04) 1px, transparent 1px);
-    background-size:100% 34px;
-  }
-  header.page h1{
-    font-family:var(--display);font-weight:700;font-size:clamp(20px,3.4vw,28px);
-    margin:0 0 6px;letter-spacing:-.01em;
-  }
-  header.page p{margin:0;color:#BCD9D3;font-size:14px;max-width:62ch}
+  header.page h1{font-size:clamp(22px,4vw,30px);margin:0 0 6px;letter-spacing:-0.5px}
+  header.page p{margin:0;color:var(--muted);max-width:62ch}
 
-  /* ---------- panels ---------- */
-  .panel{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);margin-bottom:22px;overflow:hidden}
-  .panel>h2{
-    font-family:var(--display);font-size:15px;font-weight:600;margin:0;
-    padding:14px 18px;border-bottom:1px solid var(--line);
-    display:flex;align-items:center;gap:10px;
+  .panel{
+    background:#fff;border:1px solid var(--panel-line);border-radius:16px;
+    padding:20px 22px 8px;margin-bottom:16px;box-shadow:0 1px 2px rgba(0,0,0,.03);
   }
-  .panel>h2 .tag{
-    font-family:var(--mono);font-size:11px;font-weight:500;color:var(--teal);
-    background:var(--teal-tint);border-radius:4px;padding:2px 7px;letter-spacing:.04em;
-  }
-  .panel-body{padding:18px}
+  .panel > h2{font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);margin:0 0 14px;font-weight:700}
+  .panel .note{font-size:12.5px;color:var(--muted);margin:-6px 0 14px;max-width:78ch}
 
-  .grid{display:grid;gap:14px}
-  .grid.cols-3{grid-template-columns:repeat(3,1fr)}
-  .grid.cols-4{grid-template-columns:repeat(4,1fr)}
-  @media(max-width:760px){.grid.cols-3,.grid.cols-4{grid-template-columns:1fr 1fr}}
-  @media(max-width:430px){.grid.cols-3,.grid.cols-4{grid-template-columns:1fr}}
+  .grid{display:grid;gap:12px 16px}
+  .g3{grid-template-columns:repeat(3,1fr)}
+  .g4{grid-template-columns:repeat(4,1fr)}
+  @media(max-width:760px){.g3,.g4{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.g3,.g4{grid-template-columns:1fr}}
 
-  label.field{display:flex;flex-direction:column;gap:5px;font-size:12.5px;font-weight:600;color:var(--ink-soft)}
-  label.field span.hint{font-weight:400;color:#7E9994;font-size:11.5px}
-  label.field input{margin-top:auto}
-  input[type=number],input[type=text]{
-    font-family:var(--mono);font-size:14px;color:var(--ink);
-    border:1px solid var(--line);border-radius:7px;padding:8px 10px;background:#FCFEFD;width:100%;
-  }
-  input[type=number]:focus,input[type=text]:focus{outline:2px solid var(--teal);outline-offset:1px;border-color:var(--teal)}
-  input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{margin-left:4px}
+  .field{display:flex;flex-direction:column;margin-bottom:12px}
+  .field label{font-size:12.5px;font-weight:600;margin-bottom:5px}
+  .field small{font-size:11.5px;color:var(--muted);margin-top:4px;line-height:1.3}
+  .field input,.field select{font:inherit;font-size:14px;padding:9px 10px;border:1px solid #cbd5e1;border-radius:var(--field-radius);background:#fff;width:100%}
+  .field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:0;border-color:var(--accent)}
+  .toggle{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:600;cursor:pointer}
+  .toggle input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
 
-  details.settings{border-top:1px dashed var(--line)}
-  details.settings summary{
-    cursor:pointer;padding:12px 18px;font-size:13px;font-weight:600;color:var(--teal);
-    list-style:none;display:flex;align-items:center;gap:8px;user-select:none;
+  /* ---------- accordions ---------- */
+  details.acc{padding:0}
+  details.acc > summary{
+    list-style:none;cursor:pointer;user-select:none;
+    font-size:12px;text-transform:uppercase;letter-spacing:1.5px;color:var(--accent);font-weight:700;
+    padding:18px 22px;display:flex;align-items:center;justify-content:space-between;gap:10px;
   }
-  details.settings summary::before{content:"▸";transition:transform .15s}
-  details.settings[open] summary::before{transform:rotate(90deg)}
-  details.settings .panel-body{border-top:1px solid var(--line)}
-  .settings-note{font-size:12px;color:#7E9994;margin:0 0 14px}
+  details.acc > summary::-webkit-details-marker{display:none}
+  details.acc > summary .chev{
+    width:8px;height:8px;flex:0 0 auto;
+    border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);
+    transform:rotate(45deg);transition:transform .2s;margin-bottom:3px;
+  }
+  details.acc[open] > summary .chev{transform:rotate(-135deg);margin-bottom:-3px}
+  details.acc > summary:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:8px}
+  details.acc .acc-body{padding:2px 22px 8px}
 
-  /* ---------- roster tables ---------- */
-  .table-scroll{overflow-x:auto}
-  table.roster{border-collapse:collapse;width:100%;min-width:860px;font-size:13px}
-  table.roster th,table.roster td{border-bottom:1px solid var(--line);padding:8px 10px;text-align:center;white-space:nowrap}
-  table.roster th{
-    font-family:var(--display);font-weight:600;font-size:11.5px;color:var(--ink-soft);
-    text-transform:uppercase;letter-spacing:.05em;background:#F2F8F6;
-  }
-  table.roster td.day{font-weight:600;text-align:left;font-size:13.5px}
-  table.roster tr.weekend td.day{color:var(--teal)}
-  table.roster tr:last-child td{border-bottom:none}
-  table.roster input[type=checkbox]{width:17px;height:17px;accent-color:var(--teal);cursor:pointer}
-  table.roster input.ph-check{accent-color:var(--amber)}
-  table.roster input.hours{width:74px;text-align:right;padding:5px 8px;font-size:13px}
-  table.roster input.hours:disabled{background:#F1F5F4;color:#A8BCB7;border-color:#E4ECEA}
-  tr.is-ph td{background:var(--amber-tint)}
+  /* ---------- ROSTER (matches existing UI) ---------- */
+  .roster-head{display:flex;align-items:center;gap:10px;margin:6px 0 12px}
+  .roster-head h3{font-size:17px;font-weight:700;margin:0;color:#111827}
+  .badge{font-size:10.5px;font-weight:700;letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent);background:var(--accent-soft);padding:3px 9px;border-radius:6px}
+  .roster-scroll{overflow-x:auto;margin:0 -4px}
+  table.roster{width:100%;border-collapse:collapse;min-width:980px}
+  table.roster th{font-size:11px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);
+    font-weight:700;text-align:center;padding:10px 8px;border-bottom:1px solid var(--panel-line);white-space:nowrap}
+  table.roster th.day-h{text-align:left}
+  table.roster td{padding:12px 8px;text-align:center;border-bottom:1px solid #f1f3f5;vertical-align:middle}
+  table.roster td.day{text-align:left;font-weight:700;color:#111827;white-space:nowrap;padding-left:4px}
+  table.roster td.day.wknd{color:var(--accent)}
+  table.roster input[type=checkbox]{width:18px;height:18px;cursor:pointer;accent-color:var(--accent)}
+  table.roster input[type=number]{font:inherit;font-size:14px;text-align:center;width:78px;
+    padding:8px 6px;border:1px solid #e0e4e8;border-radius:9px;background:#fff;color:var(--ink)}
+  table.roster input[type=number]:disabled{background:#f3f4f6;color:#9aa1ab;border-color:#edeff2}
+  table.roster input[type=number]:focus{outline:2px solid var(--accent);border-color:var(--accent)}
 
-  /* ---------- actions ---------- */
-  .actions{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-  button{
-    font-family:var(--display);font-weight:600;font-size:14.5px;cursor:pointer;
-    border-radius:8px;padding:11px 22px;border:1px solid transparent;
-  }
-  button.primary{background:var(--teal);color:#fff}
-  button.primary:hover{background:var(--teal-deep)}
-  button.ghost{background:transparent;color:var(--teal);border-color:var(--teal)}
-  button.ghost:hover{background:var(--teal-tint)}
-  button:focus-visible{outline:3px solid #79C7BD;outline-offset:2px}
+  .roster-week + .roster-week{margin-top:16px}
 
-  /* ---------- payslip ---------- */
-  #payslip{display:none;margin-top:30px}
-  .slip{
-    background:#fff;border:1px solid var(--line);border-radius:4px;
-    max-width:760px;margin:0 auto;position:relative;
-    box-shadow:0 14px 34px rgba(20,50,58,.10);
-    font-size:13.5px;
-  }
-  /* perforated payslip edge */
-  .slip::before,.slip::after{
-    content:"";position:absolute;top:0;bottom:0;width:14px;
-    background-image:radial-gradient(circle at 7px 10px, var(--paper) 4px, transparent 4.5px);
-    background-size:14px 22px;background-repeat:repeat-y;
-  }
-  .slip::before{left:-1px}
-  .slip::after{right:-1px}
-  .slip-inner{padding:30px 40px 34px}
-  .slip-head{display:flex;justify-content:space-between;gap:16px;align-items:flex-start;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:18px;flex-wrap:wrap}
-  .slip-head h3{font-family:var(--display);font-size:19px;font-weight:700;margin:0 0 2px}
-  .slip-head .sub{font-size:12px;color:var(--ink-soft)}
-  .slip-head .meta{font-family:var(--mono);font-size:12px;text-align:right;color:var(--ink-soft)}
-  .slip-head .meta strong{color:var(--ink)}
+  /* ---------- buttons ---------- */
+  .actions{display:flex;gap:10px;flex-wrap:wrap;margin:18px 0 6px}
+  button{font:inherit;font-weight:600;font-size:14px;padding:11px 20px;border-radius:10px;border:1px solid transparent;cursor:pointer}
+  .btn-primary{background:var(--accent);color:#fff}
+  .btn-primary:hover{background:#095a50}
+  .btn-ghost{background:#fff;border-color:#cbd5e1;color:var(--ink)}
+  .btn-ghost:hover{background:#f3f4f6}
 
-  table.lines{width:100%;border-collapse:collapse;font-variant-numeric:tabular-nums}
-  table.lines th{
-    text-align:left;font-size:10.5px;text-transform:uppercase;letter-spacing:.07em;
-    color:var(--ink-soft);border-bottom:1px solid var(--line);padding:6px 4px;font-family:var(--display);
+  /* ---------- payslip output (faithful RSL document look) ---------- */
+  #out{margin-top:26px}
+  .slip{background:#fff;color:#000;border:1.5px solid var(--line);font-family:Arial,Helvetica,sans-serif;font-size:12.5px;max-width:920px;margin:0 auto}
+  .slip .meta{display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;padding:12px 16px;border-bottom:1.5px solid var(--line)}
+  .slip .meta .co{font-weight:700;font-size:15px}
+  .slip .meta .sub{font-size:11.5px;color:#333}
+  .slip section{border-bottom:1.5px solid var(--line);padding:10px 16px}
+  .slip section:last-child{border-bottom:none}
+  .slip h4{margin:0 0 6px;font-size:12.5px;font-weight:700}
+  table.doc{width:100%;border-collapse:collapse}
+  table.doc th{font-size:11.5px;font-weight:700;text-align:right;padding:2px 6px;border-bottom:1px solid #000;white-space:nowrap}
+  table.doc th.l,table.doc td.l{text-align:left}
+  table.doc td{font-size:12px;padding:2px 6px;text-align:right;font-variant-numeric:tabular-nums}
+  table.doc tr.total td{font-weight:700;border-top:1px solid #000;padding-top:4px}
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:0}
+  .two-col > div:first-child{padding-right:18px;border-right:1.5px solid var(--line)}
+  .two-col > div:last-child{padding-left:18px}
+  @media(max-width:620px){
+    .two-col{grid-template-columns:1fr}
+    .two-col > div:first-child{padding-right:0;border-right:none;border-bottom:1.5px solid var(--line);padding-bottom:10px;margin-bottom:10px}
+    .two-col > div:last-child{padding-left:0}
   }
-  table.lines th.num,table.lines td.num{text-align:right;font-family:var(--mono)}
-  table.lines td{padding:7px 4px;border-bottom:1px dotted #E2ECE9}
-  table.lines td:first-child{font-weight:500}
-  table.lines td .ln-note{display:block;font-size:11px;color:#7E9994;font-weight:400}
-  table.lines tr.section td{
-    font-family:var(--display);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-    color:var(--teal);border-bottom:1px solid var(--line);padding-top:14px;
-  }
-  table.lines tr.gross td{font-weight:600;border-top:1.5px solid var(--ink);border-bottom:none;padding-top:10px}
-
-  .totals{margin-top:18px;border-top:2px solid var(--ink);padding-top:12px}
-  .totals .row{display:flex;justify-content:space-between;padding:5px 4px;font-variant-numeric:tabular-nums}
-  .totals .row .v{font-family:var(--mono)}
-  .totals .row.neg .v{color:var(--rose)}
-  .totals .row.net{
-    background:var(--teal-tint);border-radius:6px;margin-top:8px;padding:11px 12px;
-    font-family:var(--display);font-weight:700;font-size:16px;
-  }
-  .totals .row.net .v{font-family:var(--mono);font-weight:600;color:var(--teal-deep)}
-  .totals .row.benefit{font-size:12.5px;color:var(--ink-soft)}
-  .slip-foot{margin-top:18px;font-size:11px;color:#8AA29D;border-top:1px dotted var(--line);padding-top:10px}
-
-  .empty-msg{max-width:760px;margin:0 auto;text-align:center;color:var(--ink-soft);background:var(--rose-tint);border:1px solid #F2D4DC;border-radius:var(--radius);padding:16px}
+  .summary-row{display:flex;justify-content:space-between;font-size:12px;padding:1.5px 0;font-variant-numeric:tabular-nums}
+  .summary-row.head{font-weight:700;border-bottom:1px solid #000;margin-bottom:3px}
+  .summary-row.nett{font-weight:700;border-top:1px solid #000;margin-top:3px;padding-top:4px;font-size:13px}
+  .summary-row .lbl{flex:1}
+  .summary-row .tp{min-width:90px;text-align:right}
+  .msg{font-size:11.5px;color:#222}
+  .hint{font-size:11px;color:#777;text-align:center;margin-top:10px}
 
   @media print{
     body{background:#fff}
-    .panel,header.page,.actions,details.settings{display:none!important}
-    #payslip{display:block!important;margin:0}
-    .slip{box-shadow:none;border:none}
-    .slip::before,.slip::after{display:none}
+    .wrap{max-width:none;padding:0}
+    .no-print{display:none !important}
+    .slip{border:1.5px solid #000;max-width:none}
   }
-  @media(prefers-reduced-motion:reduce){*{transition:none!important}}
-  @media(max-width:640px){.slip-inner{padding:22px 20px}}
 </style>
 </head>
 <body>
 <div class="wrap">
 
-  <header class="page">
+  <header class="page no-print">
     <h1>Advanced Fortnightly Payslip</h1>
-    <p>Aged care nursing shifts — ordinary time, evening loading, weekend penalties, public holidays, overtime and sick leave, with salary packaging and PAYG estimated per fortnight.</p>
+    <p>Aged care nursing shifts — ordinary time, evening loading, weekend penalties, public holidays, overtime, <strong>annual leave with leave loading</strong>, and sick leave, with salary packaging and PAYG estimated per fortnight.</p>
   </header>
 
-  <!-- ============ PAY SETUP ============ -->
-  <section class="panel">
-    <h2>Pay setup <span class="tag">RATES</span></h2>
-    <div class="panel-body">
-      <div class="grid cols-3">
-        <label class="field">Base hourly rate ($)
-          <input type="number" id="baseRate" step="0.01" min="0" value="36.50">
-        </label>
-        <label class="field">Salary packaging ($ per fortnight)
-          <span class="hint">Pre-tax amount redirected to your packaging provider</span>
-          <input type="number" id="salaryPackaging" step="0.01" min="0" value="611.50">
-        </label>
-        <label class="field">Sick leave default hours
-          <input type="number" id="sickDefault" step="0.25" min="0" value="7.5">
-        </label>
-      </div>
+  <!-- PAY SETUP -->
+  <details class="panel acc no-print" open>
+    <summary>Pay setup &amp; rates<span class="chev"></span></summary>
+    <div class="acc-body">
+    <div class="grid g4">
+      <div class="field"><label for="baseRate">Base hourly rate ($)</label><input id="baseRate" type="number" step="0.0001" value="35.36"></div>
+      <div class="field"><label for="salPkg">Salary packaging ($ / fortnight)</label><input id="salPkg" type="number" step="0.01" value="617.49"><small>Pre-tax amount redirected to your packaging provider.</small></div>
+      <div class="field"><label for="superRate">Super rate (%)</label><input id="superRate" type="number" step="0.1" value="12"><small>Paid on ordinary earnings, not overtime.</small></div>
+      <div class="field"><label for="paygMode">PAYG tax</label>
+        <select id="paygMode"><option value="auto" selected>Estimate automatically</option><option value="manual">Enter manually</option></select>
+        <small>Auto uses the ATO weekly formula (scale 2, tax-free threshold). Estimate only.</small></div>
+      <div class="field" id="paygManualWrap" style="display:none"><label for="paygManual">PAYG amount ($ / fortnight)</label><input id="paygManual" type="number" step="0.01" value="824.00"></div>
     </div>
-
-    <details class="settings">
-      <summary>Loadings, penalties &amp; shift hours (editable)</summary>
-      <div class="panel-body">
-        <p class="settings-note">Defaults follow common Nurses Award–style aged care settings. Weekend and public holiday penalties <em>replace</em> the evening shift loading (the higher rate applies — they don't stack). Adjust anything to match your agreement.</p>
-        <div class="grid cols-4">
-          <label class="field">Evening shift loading (%)
-            <span class="hint">3PM-finish shifts, Mon–Fri</span>
-            <input type="number" id="pcEvening" step="0.1" value="12.5">
-          </label>
-          <label class="field">Saturday rate (% of base)
-            <input type="number" id="pcSat" step="1" value="150">
-          </label>
-          <label class="field">Sunday rate (% of base)
-            <input type="number" id="pcSun" step="1" value="175">
-          </label>
-          <label class="field">Public holiday rate (% of base)
-            <input type="number" id="pcPH" step="1" value="250">
-          </label>
-          <label class="field">Overtime — first 2 hrs (% of base)
-            <input type="number" id="pcOT1" step="1" value="150">
-          </label>
-          <label class="field">Overtime — after 2 hrs (% of base)
-            <input type="number" id="pcOT2" step="1" value="200">
-          </label>
-          <label class="field">Sunday overtime (% of base)
-            <input type="number" id="pcOTSun" step="1" value="200">
-          </label>
-          <label class="field">Public holiday overtime (% of base)
-            <input type="number" id="pcOTPH" step="1" value="250">
-          </label>
-        </div>
-        <div class="grid cols-4" style="margin-top:14px">
-          <label class="field">7AM–3PM paid hours
-            <input type="number" id="hMorning" step="0.25" value="7.5">
-          </label>
-          <label class="field">3PM–9PM paid hours
-            <input type="number" id="hEve9" step="0.25" value="5.5">
-          </label>
-          <label class="field">3PM–10PM paid hours
-            <input type="number" id="hEve10" step="0.25" value="6.5">
-          </label>
-          <label class="field">3PM–10:30PM paid hours
-            <input type="number" id="hEve1030" step="0.25" value="7">
-          </label>
-        </div>
-      </div>
-    </details>
-  </section>
-
-  <!-- ============ ROSTER ============ -->
-  <section class="panel" id="rosterPanel">
-    <h2>Week 1 — Mon to Sun <span class="tag">ROSTER</span></h2>
-    <div class="panel-body table-scroll">
-      <table class="roster" data-week="1"></table>
     </div>
-  </section>
+  </details>
 
-  <section class="panel">
-    <h2>Week 2 — Mon to Sun <span class="tag">ROSTER</span></h2>
-    <div class="panel-body table-scroll">
-      <table class="roster" data-week="2"></table>
+  <!-- SHIFT HOURS -->
+  <details class="panel acc no-print" open>
+    <summary>Shift hours<span class="chev"></span></summary>
+    <div class="acc-body">
+    <p class="note">Enter each shift’s rostered span (start to finish). The unpaid break below is subtracted from every worked shift to give paid hours.</p>
+    <div class="grid g4">
+      <div class="field"><label for="hDay">7AM–3PM span (hrs)</label><input id="hDay" type="number" step="0.25" value="8"></div>
+      <div class="field"><label for="hE9">3PM–9PM span (hrs)</label><input id="hE9" type="number" step="0.25" value="6"></div>
+      <div class="field"><label for="hE10">3PM–10PM span (hrs)</label><input id="hE10" type="number" step="0.25" value="7"></div>
+      <div class="field"><label for="hE1030">3PM–10:30PM span (hrs)</label><input id="hE1030" type="number" step="0.25" value="7.5"></div>
+      <div class="field"><label for="breakMin">Unpaid break per shift (min)</label><input id="breakMin" type="number" step="5" value="30"><small>Set to 0 if a shift has no unpaid break.</small></div>
     </div>
-  </section>
+    <p class="note" id="paidPreview" style="margin-top:4px"></p>
+    </div>
+  </details>
 
-  <div class="actions">
-    <button class="primary" id="btnGenerate">Generate payslip</button>
-    <button class="ghost" id="btnPrint">Print payslip</button>
-    <button class="ghost" id="btnReset">Clear roster</button>
+  <!-- LEAVE SETTINGS / BALANCES -->
+  <details class="panel acc no-print">
+    <summary>Leave settings &amp; balances<span class="chev"></span></summary>
+    <div class="acc-body">
+    <p class="note">Annual leave is paid at base rate with leave loading added on top; sick leave is paid at base. Tick a day’s Annual Leave or Sick Leave box in the roster to count those hours — the hours field beside it defaults to a full shift and is editable once ticked.</p>
+    <div class="grid g4">
+      <div class="field"><label for="leaveDayHrs">Default leave hours per day</label><input id="leaveDayHrs" type="number" step="0.25" value="7.5"><small>Pre-fills each Sick/Annual hours field.</small></div>
+      <div class="field"><label for="leaveLoad">Leave loading (%)</label><input id="leaveLoad" type="number" step="0.1" value="17.5"><small>Added on annual leave hours.</small></div>
+      <div class="field"><label for="alBal">Annual leave balance (hrs)</label><input id="alBal" type="number" step="0.0001" value="270.6394"></div>
+      <div class="field"><label for="addAlBal">Additional annual leave (hrs)</label><input id="addAlBal" type="number" step="0.01" value="56.67"></div>
+      <div class="field"><label for="sickBal">Sick leave balance (hrs)</label><input id="sickBal" type="number" step="0.0001" value="37.1275"></div>
+      <div class="field"><label for="lslBal">Long service leave (hrs)</label><input id="lslBal" type="number" step="0.0001" value="0"></div>
+      <div class="field"><label for="tilBal">Time in lieu (hrs)</label><input id="tilBal" type="number" step="0.01" value="0"></div>
+    </div>
+    </div>
+  </details>
+
+  <!-- LOADINGS -->
+  <details class="panel acc no-print">
+    <summary>Loadings, penalties &amp; overtime<span class="chev"></span></summary>
+    <div class="acc-body">
+    <p class="note">Weekend and public holiday penalties <em>replace</em> the evening shift loading (the higher rate applies — they don’t stack). Each penalty is the loading <em>on top of</em> base; base for every worked hour is counted in Ordinary Time. <strong>Overtime is generated automatically:</strong> paid leave then worked hours fill the ordinary-hours cap below in date order, and any worked hours past the cap become overtime (first 2 hrs at T1.5, the rest at T2.0). Weekend hours that fall in the overtime zone get no weekend loading. The roster’s per-day Overtime Hrs add on top as explicit extra overtime.</p>
+    <div class="grid g4">
+      <div class="field"><label for="ordCap">Ordinary hours cap (per fortnight)</label><input id="ordCap" type="number" step="0.5" value="76"><small>Worked hours beyond this become overtime.</small></div>
+      <div class="field"><label for="evePct">Evening shift loading (%)</label><input id="evePct" type="number" step="0.1" value="12.5"><small>3PM-finish shifts, Mon–Fri.</small></div>
+      <div class="field"><label for="satPct">Saturday loading (%)</label><input id="satPct" type="number" step="0.1" value="50"></div>
+      <div class="field"><label for="sunPct">Sunday loading (%)</label><input id="sunPct" type="number" step="0.1" value="75"></div>
+      <div class="field"><label for="phPct">Public holiday loading (%)</label><input id="phPct" type="number" step="0.1" value="150"></div>
+      <div class="field"><label for="ot1Pct">Overtime T1.5 rate (%)</label><input id="ot1Pct" type="number" step="0.1" value="150"></div>
+      <div class="field"><label for="ot2Pct">Overtime T2.0 rate (%)</label><input id="ot2Pct" type="number" step="0.1" value="200"></div>
+    </div>
+    </div>
+  </details>
+
+  <!-- ALLOWANCES -->
+  <details class="panel acc no-print">
+    <summary>Allowances<span class="chev"></span></summary>
+    <div class="acc-body">
+    <p class="note">Quantities can be derived from your roster: <strong>laundry</strong> = hours worked, <strong>uniform</strong> = hours worked + annual-leave hours, <strong>meal</strong> = one per day with overtime. Untick below to enter quantities by hand.</p>
+    <label class="toggle"><input type="checkbox" id="autoAllow" checked> Derive quantities from roster</label>
+    <div class="grid g3" style="margin-top:14px">
+      <div class="field"><label for="mealQty">Meal allowance — qty</label><input id="mealQty" type="number" step="0.5" value="0" disabled><small>Days with overtime.</small></div>
+      <div class="field"><label for="mealRate">Meal allowance — rate ($)</label><input id="mealRate" type="number" step="0.0001" value="16.62"></div>
+      <div class="field"></div>
+      <div class="field"><label for="uniQty">Uniform allowance — qty</label><input id="uniQty" type="number" step="0.5" value="0" disabled><small>Worked + annual-leave hours.</small></div>
+      <div class="field"><label for="uniRate">Uniform allowance — rate ($)</label><input id="uniRate" type="number" step="0.0001" value="0.46"></div>
+      <div class="field"></div>
+      <div class="field"><label for="launQty">Laundry allowance — qty</label><input id="launQty" type="number" step="0.5" value="0" disabled><small>Hours worked.</small></div>
+      <div class="field"><label for="launRate">Laundry allowance — rate ($)</label><input id="launRate" type="number" step="0.0001" value="0.17"></div>
+    </div>
+    </div>
+  </details>
+
+  <!-- ROSTER WEEK 1 -->
+  <div class="panel no-print roster-week">
+    <div class="roster-head"><h3>Week 1 — Mon to Sun</h3><span class="badge">Roster</span></div>
+    <div class="roster-scroll"><div id="week1"></div></div>
   </div>
 
-  <!-- ============ PAYSLIP ============ -->
-  <section id="payslip" aria-live="polite"></section>
+  <!-- ROSTER WEEK 2 -->
+  <div class="panel no-print roster-week">
+    <div class="roster-head"><h3>Week 2 — Mon to Sun</h3><span class="badge">Roster</span></div>
+    <div class="roster-scroll"><div id="week2"></div></div>
+  </div>
 
+  <div class="actions no-print">
+    <button class="btn-primary" id="gen">Generate payslip</button>
+    <button class="btn-ghost" id="print">Print payslip</button>
+    <button class="btn-ghost" id="clear">Clear roster</button>
+  </div>
+
+  <div id="out"></div>
 </div>
 
 <script>
-(function(){
-  "use strict";
+const DAYS=["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
+const SHIFTCOLS=[
+  {k:"day",  h:"7AM–3PM",     hid:"hDay",  eve:false},
+  {k:"e9",   h:"3PM–9PM",     hid:"hE9",   eve:true},
+  {k:"e10",  h:"3PM–10PM",    hid:"hE10",  eve:true},
+  {k:"e1030",h:"3PM–10:30PM", hid:"hE1030",eve:true},
+];
 
-  var DAYS = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"];
-  var SHIFTS = [
-    { key:"morning", label:"7AM–3PM", hoursInput:"hMorning", evening:false },
-    { key:"eve9",    label:"3PM–9PM", hoursInput:"hEve9",    evening:true  },
-    { key:"eve10",   label:"3PM–10PM",hoursInput:"hEve10",   evening:true  },
-    { key:"eve1030", label:"3PM–10:30PM",hoursInput:"hEve1030",evening:true }
-  ];
-
-  /* ---------- build roster tables ---------- */
-  function buildRoster(table){
-    var week = table.getAttribute("data-week");
-    var html = "<thead><tr><th style='text-align:left'>Day</th>";
-    SHIFTS.forEach(function(s){ html += "<th>"+s.label+"</th>"; });
-    html += "<th>Overtime hrs</th><th>Public holiday</th><th>Sick leave</th><th>Sick hrs</th></tr></thead><tbody>";
-    DAYS.forEach(function(d,i){
-      var isWknd = i>=5;
-      var id = "w"+week+"d"+i;
-      html += "<tr class='"+(isWknd?"weekend":"")+"' id='row-"+id+"'>";
-      html += "<td class='day'>"+d+"</td>";
-      SHIFTS.forEach(function(s){
-        html += "<td><input type='checkbox' id='"+id+"-"+s.key+"' aria-label='"+d+" week "+week+" "+s.label+"'></td>";
-      });
-      html += "<td><input type='number' class='hours' id='"+id+"-ot' min='0' step='0.25' placeholder='0' aria-label='"+d+" week "+week+" overtime hours'></td>";
-      html += "<td><input type='checkbox' class='ph-check' id='"+id+"-ph' aria-label='"+d+" week "+week+" public holiday'></td>";
-      html += "<td><input type='checkbox' id='"+id+"-sick' aria-label='"+d+" week "+week+" sick leave'></td>";
-      html += "<td><input type='number' class='hours' id='"+id+"-sickhrs' min='0' step='0.25' placeholder='7.5' disabled aria-label='"+d+" week "+week+" sick leave hours'></td>";
-      html += "</tr>";
-    });
-    html += "</tbody>";
-    table.innerHTML = html;
+function buildWeek(elId,weekNo){
+  const headCols = SHIFTCOLS.map(c=>`<th>${c.h}</th>`).join("");
+  let html=`<table class="roster"><thead><tr>
+    <th class="day-h">Day</th>${headCols}
+    <th>Overtime Hrs</th><th>Public Holiday</th>
+    <th>Sick Leave</th><th>Sick Hrs</th>
+    <th>Annual Leave</th><th>Annual Hrs</th>
+  </tr></thead><tbody>`;
+  for(let i=0;i<7;i++){
+    const idx=(weekNo-1)*7+i;
+    const wknd=i>=5;
+    const shiftCells=SHIFTCOLS.map(c=>
+      `<td><input type="checkbox" class="shift" data-day="${idx}" data-shift="${c.k}"></td>`).join("");
+    html+=`<tr>
+      <td class="day ${wknd?'wknd':''}">${DAYS[i]}</td>
+      ${shiftCells}
+      <td><input type="number" class="ot" data-day="${idx}" step="0.25" value="0"></td>
+      <td><input type="checkbox" class="ph" data-day="${idx}"></td>
+      <td><input type="checkbox" class="sickChk" data-day="${idx}"></td>
+      <td><input type="number" class="sickHrs" data-day="${idx}" step="0.25" value="7.5" disabled></td>
+      <td><input type="checkbox" class="alChk" data-day="${idx}"></td>
+      <td><input type="number" class="alHrs" data-day="${idx}" step="0.25" value="7.5" disabled></td>
+    </tr>`;
   }
-  document.querySelectorAll("table.roster").forEach(buildRoster);
+  html+="</tbody></table>";
+  document.getElementById(elId).innerHTML=html;
+}
+buildWeek("week1",1);
+buildWeek("week2",2);
 
-  /* enable sick-hours input only when sick leave ticked; tint PH rows */
-  document.addEventListener("change", function(e){
-    var t = e.target;
-    if (t.id && t.id.slice(-5) === "-sick"){
-      var hrs = document.getElementById(t.id + "hrs");
-      hrs.disabled = !t.checked;
-      if (t.checked && !hrs.value) hrs.placeholder = num(val("sickDefault",7.5)).toString();
-      if (!t.checked) hrs.value = "";
-    }
-    if (t.classList.contains("ph-check")){
-      t.closest("tr").classList.toggle("is-ph", t.checked);
+function wireLeaveToggle(chkClass,hrsClass){
+  document.querySelectorAll("."+chkClass).forEach(chk=>{
+    chk.addEventListener("change",()=>{
+      const hrs=document.querySelector(`.${hrsClass}[data-day="${chk.dataset.day}"]`);
+      hrs.disabled=!chk.checked;
+      if(chk.checked && (parseFloat(hrs.value)||0)===0) hrs.value=num("leaveDayHrs");
+    });
+  });
+}
+wireLeaveToggle("sickChk","sickHrs");
+wireLeaveToggle("alChk","alHrs");
+
+// allowance auto-derive toggle: lock the qty fields when on
+const ALLOW_QTY=["mealQty","uniQty","launQty"];
+document.getElementById("autoAllow").addEventListener("change",e=>{
+  ALLOW_QTY.forEach(id=>{ document.getElementById(id).disabled=e.target.checked; });
+});
+
+// live paid-hours preview (span minus unpaid break)
+function updatePaidPreview(){
+  const b=parseFloat(document.getElementById("breakMin").value)/60||0;
+  const p=v=>Math.max(0,(parseFloat(document.getElementById(v).value)||0)-b);
+  document.getElementById("paidPreview").innerHTML=
+    `Paid hours after break: 7AM–3PM <strong>${p("hDay")}</strong> · `+
+    `3PM–9PM <strong>${p("hE9")}</strong> · 3PM–10PM <strong>${p("hE10")}</strong> · `+
+    `3PM–10:30PM <strong>${p("hE1030")}</strong>`;
+}
+["hDay","hE9","hE10","hE1030","breakMin"].forEach(id=>
+  document.getElementById(id).addEventListener("input",updatePaidPreview));
+updatePaidPreview();
+
+const num=id=>parseFloat(document.getElementById(id).value)||0;
+const money=n=>n.toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2});
+const qfmt=n=>n.toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2});
+
+function paygWeekly(x){
+  const t=[[359,0,0],[438,0.1900,68.3462],[548,0.2900,112.1942],[721,0.2100,68.3465],
+    [865,0.2190,74.8369],[1282,0.3477,186.2119],[2596,0.3450,182.7504],
+    [3303,0.3900,299.6019],[Infinity,0.4700,563.5196]];
+  for(const [cap,a,b] of t){ if(x<cap) return Math.max(0,Math.round(a*(x+0.99)-b)); }
+  return 0;
+}
+
+document.getElementById("paygMode").addEventListener("change",e=>{
+  document.getElementById("paygManualWrap").style.display = e.target.value==="manual"?"flex":"none";
+});
+
+function calc(){
+  const base=num("baseRate");
+  const sh={day:num("hDay"),e9:num("hE9"),e10:num("hE10"),e1030:num("hE1030")};
+  const brk=num("breakMin")/60;   // unpaid break per shift, in hours
+
+  const ll=num("leaveLoad")/100;
+  const capTotal=num("ordCap");           // ordinary hours cap per fortnight
+
+  // 1) gather each day in date order (W1 Mon..Sun, W2 Mon..Sun)
+  let alT=0, sickT=0;
+  const days=[];
+  for(let idx=0;idx<14;idx++){
+    const dow=idx%7;
+    const ph=document.querySelector(`.ph[data-day="${idx}"]`).checked;
+    let worked=0, evening=0;
+    SHIFTCOLS.forEach(c=>{
+      const box=document.querySelector(`.shift[data-day="${idx}"][data-shift="${c.k}"]`);
+      if(box.checked){ const paid=Math.max(0,sh[c.k]-brk); worked+=paid; if(c.eve) evening+=paid; }
+    });
+    const manOt=parseFloat(document.querySelector(`.ot[data-day="${idx}"]`).value)||0;
+    if(document.querySelector(`.sickChk[data-day="${idx}"]`).checked)
+      sickT+=parseFloat(document.querySelector(`.sickHrs[data-day="${idx}"]`).value)||0;
+    if(document.querySelector(`.alChk[data-day="${idx}"]`).checked)
+      alT+=parseFloat(document.querySelector(`.alHrs[data-day="${idx}"]`).value)||0;
+    days.push({dow,ph,worked,evening,manOt});
+  }
+
+  // 2) cap is consumed first by paid leave, then by worked hours in date order.
+  //    Worked hours beyond the cap become overtime and lose any penalty/weekend loading.
+  let capLeft=Math.max(0, capTotal-(alT+sickT));
+  let ordHrs=0,eveHrs=0,satHrs=0,sunHrs=0,phHrs=0,otWorked=0,manOtTotal=0;
+  const otDaySet=new Set();
+  days.forEach((d,i)=>{
+    if(d.manOt>0){ manOtTotal+=d.manOt; otDaySet.add(i); }   // explicit extra OT
+    if(d.worked<=0) return;
+    const ordPart=Math.min(d.worked, capLeft);               // ordinary portion (under cap)
+    const otPart=d.worked-ordPart;                           // overflow -> overtime
+    capLeft-=ordPart;
+    ordHrs+=ordPart;
+    if(otPart>0){ otWorked+=otPart; otDaySet.add(i); }
+    if(ordPart>0){                                           // penalties apply only to ordinary hours
+      if(d.ph) phHrs+=ordPart;
+      else if(d.dow===6) sunHrs+=ordPart;
+      else if(d.dow===5) satHrs+=ordPart;
+      else eveHrs+=ordPart*(d.evening/d.worked);             // weekday evening proportion
     }
   });
 
-  /* ---------- helpers ---------- */
-  function num(v){ var n = parseFloat(v); return isFinite(n) ? n : 0; }
-  function val(id, fallback){
-    var n = parseFloat(document.getElementById(id).value);
-    return isFinite(n) ? n : (fallback || 0);
-  }
-  function money(n){
-    return "$" + Math.abs(n).toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2});
-  }
-  function fmtH(h){ return h.toLocaleString("en-AU",{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  // 3) total overtime pool: first 2 hours at T1.5, the rest at T2.0
+  const otTotal=otWorked+manOtTotal;
+  const ot1=Math.min(otTotal,2);
+  const ot2=Math.max(0,otTotal-2);
+  const otDays=otDaySet.size;
 
-  /* ---------- PAYG estimate (2025–26 resident, tax-free threshold, annualised) ---------- */
-  function annualTax(income){
-    if (income <= 18200) return 0;
-    var tax = 0;
-    if (income > 190000) tax += (income-190000)*0.45, income = 190000;
-    if (income > 135000) tax += (income-135000)*0.37, income = 135000;
-    if (income > 45000)  tax += (income-45000)*0.30,  income = 45000;
-    if (income > 18200)  tax += (income-18200)*0.16;
-    return tax;
-  }
-  function medicareLevy(income){
-    var lower = 27222, upper = 34027; // single low-income shading band
-    if (income <= lower) return 0;
-    if (income <= upper) return (income - lower) * 0.10;
-    return income * 0.02;
-  }
-  function fortnightTax(taxableFortnight){
-    if (taxableFortnight <= 0) return 0;
-    var annual = taxableFortnight * 26;
-    var t = (annualTax(annual) + medicareLevy(annual)) / 26;
-    return Math.max(0, Math.round(t * 100) / 100);
+  const lines=[];
+  const add=(name,q,rate,factor)=>{ if(q>0) lines.push({name,q,rate,factor,amt:q*rate*(factor===null?1:factor)}); };
+
+  add("Ordinary Time", ordHrs, base, 1);
+  add("Overtime T1.50", ot1, base, num("ot1Pct")/100);
+  add("Overtime T2.00", ot2, base, num("ot2Pct")/100);
+  if(alT>0) lines.push({name:"Annual Leave - Entitled",q:alT,rate:base,factor:null,amt:alT*base});
+  add("Leave Loading "+num("leaveLoad")+"%", alT, base, ll);
+  if(sickT>0) lines.push({name:"Sick Leave",q:sickT,rate:base,factor:null,amt:sickT*base});
+  add("Saturday Loading "+num("satPct")+"%", satHrs, base, num("satPct")/100);
+  add("Sunday Loading "+num("sunPct")+"%", sunHrs, base, num("sunPct")/100);
+  add("Public Holiday Loading "+num("phPct")+"%", phHrs, base, num("phPct")/100);
+  add("Shift Loading "+num("evePct")+"%", eveHrs, base, num("evePct")/100);
+  // allowance quantities — derived from roster, or manual
+  const auto=document.getElementById("autoAllow").checked;
+  const mealQty = auto ? otDays        : num("mealQty");
+  const uniQty  = auto ? (ordHrs+alT)  : num("uniQty");
+  const launQty = auto ? ordHrs        : num("launQty");
+  if(auto){
+    document.getElementById("mealQty").value=mealQty;
+    document.getElementById("uniQty").value=uniQty;
+    document.getElementById("launQty").value=launQty;
   }
 
-  /* ---------- calculation engine ---------- */
-  function calculate(){
-    var base = val("baseRate");
-    var cfg = {
-      evening: val("pcEvening")/100,
-      sat:  val("pcSat")/100,
-      sun:  val("pcSun")/100,
-      ph:   val("pcPH")/100,
-      ot1:  val("pcOT1")/100,
-      ot2:  val("pcOT2")/100,
-      otSun:val("pcOTSun")/100,
-      otPH: val("pcOTPH")/100
-    };
-    var sickDefault = val("sickDefault", 7.5);
+  add("Meal Allowance", mealQty, num("mealRate"), 1);
 
-    // accumulators: { hours, multiplier }
-    var acc = {
-      ordinary:   {label:"Ordinary hours", note:"Weekday, base rate", h:0, m:1},
-      eveBase:    {label:"Evening shift — base", note:"Weekday 3PM-finish shifts", h:0, m:1},
-      eveLoad:    {label:"Evening shift loading", note:(val("pcEvening"))+"% of base", h:0, m:cfg.evening},
-      sat:        {label:"Saturday penalty rate", note:val("pcSat")+"% of base", h:0, m:cfg.sat},
-      sun:        {label:"Sunday penalty rate", note:val("pcSun")+"% of base", h:0, m:cfg.sun},
-      ph:         {label:"Public holiday rate", note:val("pcPH")+"% of base", h:0, m:cfg.ph},
-      ot1:        {label:"Overtime — first 2 hrs/day", note:val("pcOT1")+"% of base", h:0, m:cfg.ot1},
-      ot2:        {label:"Overtime — after 2 hrs/day", note:val("pcOT2")+"% of base", h:0, m:cfg.ot2},
-      otSun:      {label:"Overtime — Sunday", note:val("pcOTSun")+"% of base", h:0, m:cfg.otSun},
-      otPH:       {label:"Overtime — public holiday", note:val("pcOTPH")+"% of base", h:0, m:cfg.otPH},
-      sick:       {label:"Sick leave (paid)", note:"Base rate", h:0, m:1}
-    };
+  const taxableGross=lines.reduce((s,l)=>s+l.amt,0);
 
-    var anyEntry = false;
+  const ntLines=[];
+  const addNt=(name,q,rate)=>{ if(q>0) ntLines.push({name,q,rate,factor:1,amt:q*rate}); };
+  addNt("Uniform Allowance", uniQty, num("uniRate"));
+  addNt("Laundry Allowance", launQty, num("launRate"));
+  const nonTaxable=ntLines.reduce((s,l)=>s+l.amt,0);
 
-    [1,2].forEach(function(week){
-      DAYS.forEach(function(d,i){
-        var id = "w"+week+"d"+i;
-        var isSat = (i===5), isSun = (i===6);
-        var isPH  = document.getElementById(id+"-ph").checked;
+  const salPkg=num("salPkg");
+  const taxableAfterPkg=Math.max(0,taxableGross-salPkg);
+  let payg = document.getElementById("paygMode").value==="manual"
+    ? num("paygManual") : paygWeekly(taxableAfterPkg/2)*2;
 
-        // shift hours for the day
-        var shiftH = 0, eveH = 0;
-        SHIFTS.forEach(function(s){
-          if (document.getElementById(id+"-"+s.key).checked){
-            var h = val(s.hoursInput);
-            shiftH += h;
-            if (s.evening) eveH += h;
-            anyEntry = true;
-          }
-        });
+  const otAmt=ot1*base*num("ot1Pct")/100 + ot2*base*num("ot2Pct")/100;
+  const superAmt=(taxableGross-otAmt)*(num("superRate")/100);
+  const nett=taxableAfterPkg - payg + nonTaxable;
 
-        // classify ordinary/shift hours by day type (penalties replace evening loading)
-        if (shiftH > 0){
-          if (isPH)       acc.ph.h  += shiftH;
-          else if (isSun) acc.sun.h += shiftH;
-          else if (isSat) acc.sat.h += shiftH;
-          else {
-            var morningH = shiftH - eveH;
-            acc.ordinary.h += morningH;
-            acc.eveBase.h  += eveH;
-            acc.eveLoad.h  += eveH;
-          }
-        }
+  return {lines,ntLines,taxableGross,nonTaxable,salPkg,taxableAfterPkg,payg,superAmt,nett,alT,sickT};
+}
 
-        // overtime
-        var ot = num(document.getElementById(id+"-ot").value);
-        if (ot > 0){
-          anyEntry = true;
-          if (isPH)       acc.otPH.h  += ot;
-          else if (isSun) acc.otSun.h += ot;
-          else {
-            var first = Math.min(ot, 2);
-            acc.ot1.h += first;
-            acc.ot2.h += ot - first;
-          }
-        }
+function render(){
+  const d=calc();
+  const fc=f=> f===null? "" : f.toFixed(4);
+  const taxRows=d.lines.map(l=>`<tr><td class="l">${l.name}</td><td class="l">PCW</td>
+      <td>${qfmt(l.q)}</td><td>${l.rate.toFixed(4)}</td><td>${fc(l.factor)}</td><td>${money(l.amt)}</td></tr>`).join("")
+    || `<tr><td class="l" colspan="6" style="color:#888">No taxable payments — tick some shifts in the roster.</td></tr>`;
+  const ntRows=d.ntLines.map(l=>`<tr><td class="l">${l.name}</td><td class="l">PCW</td>
+      <td>${qfmt(l.q)}</td><td>${l.rate.toFixed(4)}</td><td>${l.factor.toFixed(4)}</td><td>${money(l.amt)}</td></tr>`).join("");
+  const ntSection=d.ntLines.length?`<section><h4>Non Taxable Allowances</h4>
+      <table class="doc"><thead><tr><th class="l">Allowance</th><th class="l">Comments</th><th>Qty</th><th>Rate</th><th>Factor</th><th>Amount</th></tr></thead>
+      <tbody>${ntRows}</tbody></table></section>`:"";
 
-        // sick leave
-        if (document.getElementById(id+"-sick").checked){
-          anyEntry = true;
-          var sh = document.getElementById(id+"-sickhrs").value;
-          acc.sick.h += sh === "" ? sickDefault : num(sh);
-        }
-      });
-    });
+  const out=`<div class="slip">
+    <div class="meta">
+      <div><div class="co">Fortnightly Payslip</div><div class="sub">Aged Care Nursing — estimate</div></div>
+      <div style="text-align:right"><div class="sub">Pay Sequence 3571</div><div class="sub">Generated ${new Date().toLocaleDateString("en-AU")}</div></div>
+    </div>
+    <section><h4>Taxable Payments</h4>
+      <table class="doc"><thead><tr><th class="l">Payment</th><th class="l">Comments</th><th>Qty</th><th>Rate</th><th>Factor</th><th>Amount</th></tr></thead>
+      <tbody>${taxRows}<tr class="total"><td class="l" colspan="5">Total Taxable Payments</td><td>${money(d.taxableGross)}</td></tr></tbody></table>
+    </section>
+    ${ntSection}
+    <section><h4>Deductions</h4>
+      <table class="doc"><thead><tr><th class="l">Deduction</th><th class="l">Acct Name</th><th>Before Tax</th><th>After Tax</th></tr></thead>
+      <tbody>
+        <tr><td class="l">External Salary Packaging</td><td class="l">RSL Care Limited</td><td>${money(d.salPkg)}</td><td></td></tr>
+        <tr><td class="l">P.A.Y.G. (Tax Code 2)</td><td class="l"></td><td></td><td>${money(d.payg)}</td></tr>
+      </tbody></table>
+    </section>
+    <section><h4>Disbursements</h4>
+      <table class="doc"><thead><tr><th class="l">Type</th><th class="l">Reference</th><th>Amount</th></tr></thead>
+      <tbody><tr><td class="l">Direct Credit</td><td class="l">Payroll 29229</td><td>${money(d.nett)}</td></tr></tbody></table>
+    </section>
+    <section><div class="two-col">
+      <div>
+        <h4>Pay Summary — This Pay</h4>
+        <div class="summary-row head"><span class="lbl"></span><span class="tp">This Pay</span></div>
+        <div class="summary-row"><span class="lbl">Total Gross Pay</span><span class="tp">${money(d.taxableGross+d.nonTaxable)}</span></div>
+        <div class="summary-row"><span class="lbl">Total Deductions (Before Tax)</span><span class="tp">${money(d.salPkg)}</span></div>
+        <div class="summary-row"><span class="lbl">Total Taxable</span><span class="tp">${money(d.taxableAfterPkg)}</span></div>
+        <div class="summary-row"><span class="lbl">Total Non-Taxable</span><span class="tp">${money(d.nonTaxable)}</span></div>
+        <div class="summary-row"><span class="lbl">P.A.Y.G.</span><span class="tp">${money(d.payg)}</span></div>
+        <div class="summary-row"><span class="lbl">Superannuation (info)</span><span class="tp">${money(d.superAmt)}</span></div>
+        <div class="summary-row nett"><span class="lbl">Nett Pay</span><span class="tp">${money(d.nett)}</span></div>
+      </div>
+      <div>
+        <h4>Leave Entitlement — Balance (hrs)</h4>
+        <div class="summary-row head"><span class="lbl"></span><span class="tp">Balance</span></div>
+        <div class="summary-row"><span class="lbl">Annual Leave</span><span class="tp">${(num("alBal")-d.alT).toFixed(4)}</span></div>
+        <div class="summary-row"><span class="lbl">Additional Annual Leave</span><span class="tp">${num("addAlBal").toFixed(2)}</span></div>
+        <div class="summary-row"><span class="lbl">Long Service Leave</span><span class="tp">${num("lslBal").toFixed(4)}</span></div>
+        <div class="summary-row"><span class="lbl">Sick Leave</span><span class="tp">${(num("sickBal")-d.sickT).toFixed(4)}</span></div>
+        <div class="summary-row"><span class="lbl">Time in Lieu</span><span class="tp">${num("tilBal").toFixed(2)}</span></div>
+        <h4 style="margin-top:14px">Superannuation</h4>
+        <div class="summary-row"><span class="lbl">H.E.S.T. Australia Limited</span><span class="tp">${money(d.superAmt)}</span></div>
+      </div>
+    </div></section>
+    <section><h4>Messages</h4>
+      <div class="msg">PAYG is an ATO-formula estimate (scale 2, tax-free threshold) and may differ from your actual withholding — switch to manual entry in Pay setup to match a real slip. Annual leave is paid at base with leave loading added separately.</div>
+    </section>
+  </div>
+  <p class="hint no-print">Tip: use “Print payslip” to save as PDF.</p>`;
 
-    if (!anyEntry) return null;
+  document.getElementById("out").innerHTML=out;
+  document.getElementById("out").scrollIntoView({behavior:"smooth",block:"start"});
+}
 
-    // build payslip lines
-    var lines = [], gross = 0, totalHours = 0;
-    var order = ["ordinary","eveBase","eveLoad","sat","sun","ph","ot1","ot2","otSun","otPH","sick"];
-    order.forEach(function(k){
-      var a = acc[k];
-      if (a.h <= 0) return;
-      var rate = base * a.m;
-      var amt = a.h * rate;
-      gross += amt;
-      if (k !== "eveLoad") totalHours += a.h;  // loading line shares hours already counted
-      lines.push({label:a.label, note:a.note, hours:a.h, rate:rate, amount:amt});
-    });
-
-    var packaging = Math.min(val("salaryPackaging"), gross);
-    var taxable = Math.max(0, gross - packaging);
-    var tax = fortnightTax(taxable);
-    var takeHome = taxable - tax;
-
-    return {
-      base:base, lines:lines, gross:gross, totalHours:totalHours,
-      packaging:packaging, taxable:taxable, tax:tax,
-      takeHome:takeHome, totalBenefit: takeHome + packaging
-    };
-  }
-
-  /* ---------- render ---------- */
-  function render(){
-    var out = document.getElementById("payslip");
-    var r = calculate();
-    if (!r){
-      out.style.display = "block";
-      out.innerHTML = "<div class='empty-msg'>Nothing to calculate yet — tick at least one shift, overtime entry or sick leave day in the roster above.</div>";
-      out.scrollIntoView({behavior:"smooth",block:"start"});
-      return;
-    }
-
-    var today = new Date().toLocaleDateString("en-AU",{day:"2-digit",month:"short",year:"numeric"});
-    var rows = r.lines.map(function(l){
-      return "<tr><td>"+l.label+"<span class='ln-note'>"+l.note+"</span></td>" +
-             "<td class='num'>"+fmtH(l.hours)+"</td>" +
-             "<td class='num'>"+money(l.rate)+"</td>" +
-             "<td class='num'>"+money(l.amount)+"</td></tr>";
-    }).join("");
-
-    out.style.display = "block";
-    out.innerHTML =
-      "<div class='slip'><div class='slip-inner'>" +
-        "<div class='slip-head'>" +
-          "<div><h3>Fortnightly Payslip</h3><div class='sub'>Aged care nursing — estimate</div></div>" +
-          "<div class='meta'>Generated <strong>"+today+"</strong><br>Base rate <strong>"+money(r.base)+"/hr</strong></div>" +
-        "</div>" +
-        "<table class='lines'>" +
-          "<thead><tr><th>Earnings</th><th class='num'>Hours</th><th class='num'>Rate</th><th class='num'>Amount</th></tr></thead>" +
-          "<tbody>" + rows +
-            "<tr class='gross'><td>Gross earnings</td><td class='num'>"+fmtH(r.totalHours)+"</td><td class='num'></td><td class='num'>"+money(r.gross)+"</td></tr>" +
-          "</tbody>" +
-        "</table>" +
-        "<div class='totals'>" +
-          "<div class='row neg'><span>Less salary packaging (pre-tax)</span><span class='v'>− "+money(r.packaging)+"</span></div>" +
-          "<div class='row'><span>Taxable income</span><span class='v'>"+money(r.taxable)+"</span></div>" +
-          "<div class='row neg'><span>PAYG withholding (estimate)</span><span class='v'>− "+money(r.tax)+"</span></div>" +
-          "<div class='row net'><span>Take-home pay (to bank)</span><span class='v'>"+money(r.takeHome)+"</span></div>" +
-          "<div class='row benefit'><span>Total benefit incl. packaged amount</span><span class='v'>"+money(r.totalBenefit)+"</span></div>" +
-        "</div>" +
-        "<div class='slip-foot'>PAYG is estimated from 2025–26 resident tax rates (tax-free threshold claimed) plus Medicare levy, annualised over 26 fortnights. Weekend and public holiday penalties replace the evening shift loading. This is a guide only — actual withholding on your employer payslip may differ slightly.</div>" +
-      "</div></div>";
-
-    out.scrollIntoView({behavior:"smooth",block:"start"});
-  }
-
-  document.getElementById("btnGenerate").addEventListener("click", render);
-  document.getElementById("btnPrint").addEventListener("click", function(){
-    if (document.getElementById("payslip").style.display !== "block") render();
-    window.print();
-  });
-  document.getElementById("btnReset").addEventListener("click", function(){
-    document.querySelectorAll("table.roster input[type=checkbox]").forEach(function(c){ c.checked = false; });
-    document.querySelectorAll("table.roster input.hours").forEach(function(h){ h.value = ""; if (h.id.slice(-7)==="sickhrs") h.disabled = true; });
-    document.querySelectorAll("table.roster tr.is-ph").forEach(function(tr){ tr.classList.remove("is-ph"); });
-    var out = document.getElementById("payslip");
-    out.style.display = "none"; out.innerHTML = "";
-  });
-})();
+document.getElementById("gen").addEventListener("click",render);
+document.getElementById("print").addEventListener("click",()=>{ if(!document.querySelector(".slip")) render(); window.print(); });
+document.getElementById("clear").addEventListener("click",()=>{
+  document.querySelectorAll(".shift,.ph,.sickChk,.alChk").forEach(c=>c.checked=false);
+  document.querySelectorAll(".ot").forEach(i=>i.value=0);
+  document.querySelectorAll(".sickHrs,.alHrs").forEach(i=>{i.value=7.5;i.disabled=true;});
+  document.getElementById("out").innerHTML="";
+});
 </script>
 </body>
 </html>
